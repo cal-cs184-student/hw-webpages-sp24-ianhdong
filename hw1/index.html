@@ -1,5 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+  </script>
+<script type="text/javascript"
+  src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
 
 <head>
   <style>
@@ -74,7 +80,8 @@
 <body>
 
   <h1 align="middle">CS 184/284A: Computer Graphics and Imaging, Spring 2024</h1>
-  <h1 align="middle"><a href="https://cal-cs184-student.github.io/hw-webpages-sp24-ianhdong/">Homework 1</a></h1>
+  <h1 align="middle"><a href="https://cal-cs184-student.github.io/hw-webpages-sp24-ianhdong/hw1/index.html">Homework
+      1: Rasterizer</a></h1>
   <h2 align="middle">Ian Dong</h2>
 
   <div>
@@ -113,7 +120,7 @@
         <table>
           <tr>
             <td vertical-align="center">
-              <img src="./Images/sp24-rasterizer-task1-rasterizing-triangles.png" align="center" width="50%" />
+              <img src="./Images/Task1/sp24-rasterizer-task1-rasterizing-triangles.png" align="center" width="50%" />
               <figcaption align="middle">Rasterizing Triangles</figcaption>
             </td>
           </tr>
@@ -237,22 +244,22 @@
         <table>
           <tr>
             <td>
-              <img src="./Images/sp24-rasterizer-task2-sample1.png" align="middle">
+              <img src="./Images/Task2/sp24-rasterizer-task2-sample1.png" align="middle">
               <figcaption align="middle">Supersampling Rate of 1</figcaption>
             </td>
             <td>
-              <img src="./Images/sp24-rasterizer-task2-sample4.png" align="middle" />
+              <img src="./Images/Task2/sp24-rasterizer-task2-sample4.png" align="middle" />
               <figcaption align="middle">Supersampling Rate of 4</figcaption>
             </td>
           </tr>
           <br>
           <tr>
             <td>
-              <img src="./Images/sp24-rasterizer-task2-sample9.png" align="middle" />
+              <img src="./Images/Task2/sp24-rasterizer-task2-sample9.png" align="middle" />
               <figcaption align="middle">Sampling Rate of 9</figcaption>
             </td>
             <td>
-              <img src="./Images/sp24-rasterizer-task2-sample16.png" align="middle" />
+              <img src="./Images/Task2/sp24-rasterizer-task2-sample16.png" align="middle" />
               <figcaption align="middle">Sampling Rate of 16</figcaption>
             </td>
           </tr>
@@ -274,7 +281,7 @@
         <table>
           <tr>
             <td>
-              <img src="./Images/sp24-rasterizer-task3-basketball-cubeman.png" width="50%" />
+              <img src="./Images/Task3/sp24-rasterizer-task3-basketball-cubeman.png" width="50%" />
               <figcaption align="middle">Basketball Cubeman</figcaption>
             </td>
 
@@ -315,7 +322,7 @@
         <table>
           <tr>
             <td>
-              <img src="./Images/sp24-rasterizer-task4-triangle.png" width="50%" />
+              <img src="./Images/Task4/sp24-rasterizer-task4-triangle.png" width="50%" />
               <figcaption align="middle">Smoothly Blended Triangle</figcaption>
             </td>
 
@@ -334,7 +341,7 @@
         <table>
           <tr>
             <td>
-              <img src="./Images/sp24-rasterizer-task4-circle.png" width="50%" />
+              <img src="./Images/Task4/sp24-rasterizer-task4-circle.png" width="50%" />
               <figcaption align="middle">Smoothly Blended Circle</figcaption>
             </td>
 
@@ -351,14 +358,126 @@
     <p>
     <ul>
       <li>
-        Pixel sampling is this process to help determine which pixel within the texture image to sample from and use
-        based on the barycentric coordinates for the sample point in the original image; it is a translation from the pixel (x, y) coordinates into the texels (u, v) coordinates. I implemented this algorithm by first calculating the barycentric coordinates of the sample points before multiplying them by the width and the height 
+        Pixel sampling is a process to help determine which pixel within the texture image to sample from and use
+        based on the barycentric coordinates for the sample point in the original image; it is a translation from the
+        pixel (x, y) coordinates into the texels (u, v) coordinates. I implemented this algorithm by first calculating
+        the barycentric coordinates of the sample points before multiplying them by the width and the height of the
+        texture image so that they are in the range of the texture image. For the nearest neighbor pixel sampling
+        method, I used <code>round</code> to find the closest integer texel (u, v) coordinates. For the bilinear pixel
+        sampling method, I instead used <code>floor</code> and <code>ceil</code> to find the <i>four</i> closest integer
+        texel (u, v) coordinates and then used linear interpolation to weight the "true" texel based on these points.
+      </li>
+      <li>
+        Here, I have decided to use the <code>svg/texmap/test1.svg</code> file to highlight the differences between the
+        two pixel sampling methods.
+      </li>
+      <div align="middle">
+        <table>
+          <tr>
+            <td>
+              <img src="./Images/Task5/sp24-rasterizer-task5-nearest1.png" align="middle">
+              <figcaption align="middle">Nearest Pixel Sampling at Sampling Rate of 1</figcaption>
+            </td>
+            <td>
+              <img src="./Images/Task5/sp24-rasterizer-task5-bilinear1.png" align="middle" />
+              <figcaption align="middle">Bilinear Pixel Sampling at Sampling Rate of 1</figcaption>
+            </td>
+          </tr>
+          <br>
+          <tr>
+            <td>
+              <img src="./Images/Task5/sp24-rasterizer-task5-nearest16.png" align="middle" />
+              <figcaption align="middle">Nearest Pixel Sampling at Sampling Rate of 16</figcaption>
+            </td>
+            <td>
+              <img src="./Images/Task5/sp24-rasterizer-task5-bilinear16.png" align="middle" />
+              <figcaption align="middle">Bilinear Pixel Sampling at Sampling Rate of 16</figcaption>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <li>
+        There is a large difference between nearest neighbor and bilinear
+        pixel sampling at a sample rate of 1. These examples highlight a large difference between the two pixel sampling
+        methods because the
+        bilinear pixel sampling method essentially is averaging the colors of four pixels and in some ways behaves like
+        a sampling rate of 4 so it allows for a much more realistic and smooth representation. There is a smoother
+        transition between the land and the lakes in the image, rather than sudden changes in the pixel colors. When it
+        is sampling at a rate of 16, there is already a lot of detail when using the nearest pixel sampling so the
+        difference between the two sampling methods is marginal at best and does not give much improvement.
       </li>
     </ul>
     </p>
 
     <br><br>
     <h3 align="middle">Part 6: "Level Sampling" with Mipmaps for Texture Mapping</h3>
+    <p>
+    <ul>
+      <li>
+        Level sampling is a process which uses mipmaps of differing levels of detail where each subsequent layer is
+        sampled at
+        usually a factor of 4 times less than the previous layer. The different levels of detail are based on factors
+        such as the distance away from the camera or the size of the object being textured. If the distance is closer to
+        the camera, usually there will be a small jump in texture space so intuitively it is better to use a high
+        resolution image while if there is a large jump in texture space it is further away from the image so it is
+        better to use a low resolution image. I updated my <code>if</code> conditional to figure out the the barycentric
+        coordinates of <code>(sample_x + 1, sample_y)</code> and <code>(sample_x, sample_y + 1)</code> to calculate
+        $(\frac{du}{dx}, \frac{dv}{dx}) \text{ and } (\frac{du}{dy}, \frac{dv}{dy})$. To get the mipmap level, I passed
+        in the <code>SampleParams</code> struct which contained the <code>uv</code> barycentric coordinates and scaled
+        the difference vectors before finding the longest norm of these vectors. Finally, I used <code>log_2</code> to
+        calculate the mipmap level needed. When it was <code>L_ZERO</code>, I used a mipmap of zero. When it was
+        <code>L_NEAREST</code>, I rounded the float mipmap level to the closest integer mipmap level. When it was
+        <code>L_LINEAR</code>, I found the floor and the ceiling of the float mipmap level and used linear interpolation
+        to find the color.
+      </li>
+      <li>
+        Mipmapping essentially creates caches of varying levels of resolution and acts like a pre-processed lookup table
+        to quickly apply different textures onto the image. There are different tradeoffs in terms of performance,
+        memory, and antialiasing power between the three methods. It is usually faster in performance but will incur
+        higher memory overload to store each of the mipmap levels when compared to pixel sampling.
+      </li>
+      <li>
+        Here are the eight combinations of level and pixel sampling on the <code>img/chameleon.png</code>. I centered the pixel inspector on the eye of the chameleon to show the differences between all of the combinations.
+      </li>
+      <div align="middle">
+        <table>
+          <tr>
+            <td>
+              <img src="./Images/Task6/sp24-rasterizer-task6-level0-nearest.png" align="middle">
+              <figcaption align="middle">Level 0 & Nearest Pixel Sampling</figcaption>
+            </td>
+            <td>
+              <img src="./Images/Task6/sp24-rasterizer-task6-level0-bilinear.png" align="middle" />
+              <figcaption align="middle">Level 0 & Bilinear Pixel Sampling</figcaption>
+            </td>
+          </tr>
+          <br>
+          <tr>
+            <td>
+              <img src="./Images/Task6/sp24-rasterizer-task6-levelnearest-nearest.png" align="middle" />
+              <figcaption align="middle">Nearest Level & Nearest Pixel Sampling</figcaption>
+            </td>
+            <td>
+              <img src="./Images/Task6/sp24-rasterizer-task6-levelnearest-bilinear.png" align="middle" />
+              <figcaption align="middle">Nearest Level & Bilinear Pixel Sampling</figcaption>
+            </td>
+          </tr>
+          <br>
+          <br>
+          <tr>
+            <td>
+              <img src="./Images/Task6/sp24-rasterizer-task6-levelbilinear-nearest.png" align="middle" />
+              <figcaption align="middle">Nearest Pixel Sampling at Sampling Rate of 16</figcaption>
+            </td>
+            <td>
+              <img src="./Images/Task6/sp24-rasterizer-task6-levelbilinear-bilinear.png" align="middle" />
+              <figcaption align="middle">Bilinear Pixel Sampling at Sampling Rate of 16</figcaption>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </ul>
+    </p>
 
 
 
