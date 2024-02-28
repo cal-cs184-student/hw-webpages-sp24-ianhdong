@@ -135,7 +135,7 @@
 					algorithm by looping through each point and its adjacent point, \(p_i\) and \(p_{i+1}\), and
 					computing the interpolated point \(p_i^{'} = \text{lerp}(p_i, p_{i + 1}, t) = (1 - t) p_i + t p_{i +
 					1}\). After each iteration, there will be one fewer control point than the previous iteration. This
-					process repeats until there is only one point left, which is the final evaluated point.
+					process can be repeated until there is only one point left, which would be the final evaluated point.
 				</li>
 			</ul>
 			</p>
@@ -587,7 +587,8 @@
 						</li>
 						<li>
 							In addition, I created 6 new half-edges, 3 new edges, 1 new vertex, and 2 new faces. The new
-							vertex is defined as the center of the edge that is being split while the 2 new faces are the 2 bottom triangles that are created from the split.
+							vertex is defined as the center of the edge that is being split while the 2 new faces are
+							the 2 bottom triangles that are created from the split.
 						</li>
 						<li>
 							Then, I updated each of the 16 half-edge pointers using the <code>setNeighbors()</code>
@@ -667,32 +668,39 @@
 		<div class="bounding-box">
 			Write about your eventful debugging journey, if you have experienced one.
 			<p>
-				<ul>
-					<li>
-						Learning from my mistakes, I made sure to draw the diagram correctly and to follow it very closely when I was assigning the pointers for each half-edge and the other edges, vertices, and faces. The only issue I ran into was that sometimes when I clicked on an edge or vertex the program would crash and this was because of a segmentation fault. After a while of debugging by rereading my code and my diagram, I realized I had forgot to set on the edge and vertex pointers for the newly updated ones. Then another issue occurred where one of the triangles would turn black and after debugging for a bit I realized I had set the incorrect vertex for one of the newly created half-edge.
-					</li>
-					<li>
-						Here is the incorrect half-edge split:
-						<div align="middle">
-							<table>
-								<tr>
-									<td vertical-align="center">
-										<img src="./Images/Task5/sp24-bezier-task5-incorrect.png" align="center" />
-										<figcaption align="middle">Incorrect Edge Split: Black Triangle</figcaption>
-									</td>
-								</tr>
-								<br>
-							</table>
-						
-					</li>
-				</ul>
+			<ul>
+				<li>
+					Learning from my mistakes, I made sure to draw the diagram correctly and to follow it very closely
+					when I was assigning the pointers for each half-edge and the other edges, vertices, and faces. The
+					only issue I ran into was that sometimes when I clicked on an edge or vertex the program would crash
+					and this was because of a segmentation fault. After a while of debugging by rereading my code and my
+					diagram, I realized I had forgot to set on the edge and vertex pointers for the newly updated ones.
+					Then another issue occurred where one of the triangles would turn black and after debugging for a
+					bit I realized I had set the incorrect vertex for one of the newly created half-edge.
+				</li>
+				<li>
+					Here is the incorrect half-edge split:
+					<div align="middle">
+						<table>
+							<tr>
+								<td vertical-align="center">
+									<img src="./Images/Task5/sp24-bezier-task5-incorrect.png" align="center" />
+									<figcaption align="middle">Incorrect Edge Split: Black Triangle</figcaption>
+								</td>
+							</tr>
+							<br>
+						</table>
+
+				</li>
+			</ul>
 			<p>
 		</div>
 
 		<br>
 
 		<div class="bounding-box">
-			If you have implemented support for boundary edges, show screenshots of your implementation properly handling split operations on boundary edges.
+			If you have implemented support for boundary edges, show screenshots of your implementation properly
+			handling split operations on boundary edges.
 
 		</div>
 		<br>
@@ -704,15 +712,42 @@
 			debugging tricks you have used.
 
 			<p>
-				I decided to follow the order of operations as described in the spec. Here are the formal steps I took to implement the loop subdivision:
-				<ol>
-					<li>
-						
-					</li>
-				</ol>
+				I decided to follow the order of operations as described in the spec. Here are the formal steps I took
+				to implement the loop subdivision:
+			<ol>
+				<li>
+					First, I iterated through all of the vertices in mesh using a <code>for</code> loop over the
+					<code>mesh.verticesBegin()</code> and <code>mesh.verticesEnd()</code> iterators. For each vertex, I
+					found all of the neighbors that were connected to it and then computed the new position by weighting
+					it as the sum following the formula from lecture. I then set the <code>vertex->newPosition</code> to
+					this weighted position and the <code>vertex->isNew</code> to <code>false</code> because this was not
+					a newly created vertex.
+				</li>
+				<li>
+					Next, I iterated through all of the edges in the mesh using a <code>for</code> loop over the
+					<code>mesh.EdgesBegin()</code> and <code>mesh.EdgesEnd()</code> iterators. For each edge, I found
+					the vertex and face that it was connected to and then computed the new position by weighting it as
+					the sum following the formula from lecture. I then set the <code>e->newPosition</code> to this
+					weighted position and the <code>e->isNew</code> to <code>false</code> because this was not a newly
+					created edge.
+				</li>
+				<li>
+					Then, I iterated through all of these edges in the original mesh again in order to split each of
+					them and updated their position to be that of the previously computed new position stored in the
+					edge.
+				</li>
+				<li>
+					Afterwards, I iterated through all the edges in the mesh and flipped any of the newly created edges
+					that connected an old and new vertex.
+				</li>
+				<li>
+					Finally, I iterated through all of the vertices to set their position to the previously computed new
+					position stored in the vertex.
+				</li>
+			</ol>
 			</p>
 		</div>
-		
+
 		<br>
 
 
@@ -721,10 +756,61 @@
 			subdivision. What happens to sharp corners and edges? Can you reduce this effect by pre-splitting some
 			edges?
 			<p>
-				YOUR RESPONSE GOES HERE
+			<ul>
+				<li>
+					Here are some screenshots of applying subdivision to the icosehedron mesh:
+					<div align="middle">
+						<table>
+							<tr>
+								<td vertical-align="center">
+									<img src="./Images/Task6/sp24-bezier-task6-upsample-0.png" align="center" />
+									<figcaption align="middle">Original Icosehedron Mesh</figcaption>
+								</td>
+								<td vertical-align="center">
+									<img src="./Images/Task6/sp24-bezier-task6-upsample-1.png" align="center" />
+									<figcaption align="middle">Icosehedron Mesh Upsampled 1 Time</figcaption>
+								</td>
+							</tr>
+							<tr>
+								<td vertical-align="center">
+									<img src="./Images/Task6/sp24-bezier-task6-upsample-2.png" align="center" />
+									<figcaption align="middle">Icosehedron Mesh Upsampled 2 Times</figcaption>
+								</td>
+								<td vertical-align="center">
+									<img src="./Images/Task6/sp24-bezier-task6-upsample-3.png" align="center" />
+									<figcaption align="middle">Icosehedron Mesh Upsampled 3 Times</figcaption>
+								</td>
+							</tr>
+							<tr>
+								<td vertical-align="center">
+									<img src="./Images/Task6/sp24-bezier-task6-upsample-4.png" align="center" />
+									<figcaption align="middle">Icosehedron Mesh Upsampled 4 Times</figcaption>
+								</td>
+								<td vertical-align="center">
+									<img src="./Images/Task6/sp24-bezier-task6-upsample-5.png" align="center" />
+									<figcaption align="middle">Icosehedron Mesh Upsampled 5 Times</figcaption>
+								</td>
+							</tr>
+							<br>
+						</table>
+					</div>
+				</li>
+				<li>
+					I realized that the mesh subdivision was very similar the HW 1's supersampling to reduce aliasing
+					and jaggies. The above meshes showed an analogous effect where after each subdivision performance
+					the mesh would become smoother and more rounded. The sharp corners and edges would become less
+					pronounced and the mesh would become more rounded. I realized that this effect could be reduced by
+					pre-splitting some edges because the edge splits will create new vertices which will be used to
+					update the positions of the existing vertices diagrammed in the implementation of the loop
+					subdivision. Afterwards, each vertex has a higher degrees so the distorting effect when the mesh is
+					upsampled will be reduced. Thus, the new vertices will be located at the corners of the mesh while
+					the existing vertices will be located at the center of the mesh and will lead to a more rounded mesh
+					but preserved corners and edges.
+				</li>
+			</ul>
 			</p>
 		</div>
-		
+
 		<br>
 
 
@@ -738,7 +824,97 @@
 			your pre-processing helps alleviate the effects.
 
 			<p>
-				YOUR RESPONSE GOES HERE
+			<ul>
+				<li>
+					Here are some screenshots of applying subdivision to the cube mesh:
+					<div align="middle">
+						<table>
+							<tr>
+								<td vertical-align="center">
+									<img src="./Images/Task6/sp24-bezier-task6-asymmetric-cube-0.png" align="center" />
+									<figcaption align="middle">Original Cube Mesh</figcaption>
+								</td>
+								<td vertical-align="center">
+									<img src="./Images/Task6/sp24-bezier-task6-asymmetric-cube-1.png" align="center" />
+									<figcaption align="middle">Cube Mesh Upsampled 1 Time</figcaption>
+								</td>
+							</tr>
+							<tr>
+								<td vertical-align="center">
+									<img src="./Images/Task6/sp24-bezier-task6-asymmetric-cube-2.png" align="center" />
+									<figcaption align="middle">Cube Mesh Upsampled 2 Times</figcaption>
+								</td>
+								<td vertical-align="center">
+									<img src="./Images/Task6/sp24-bezier-task6-asymmetric-cube-3.png" align="center" />
+									<figcaption align="middle">Cube Mesh Upsampled 3 Times</figcaption>
+								</td>
+							</tr>
+							<tr>
+								<td vertical-align="center">
+									<img src="./Images/Task6/sp24-bezier-task6-asymmetric-cube-4.png" align="center" />
+									<figcaption align="middle">Cube Mesh Upsampled 4 Times</figcaption>
+								</td>
+								<td vertical-align="center">
+									<img src="./Images/Task6/sp24-bezier-task6-asymmetric-cube-5.png" align="center" />
+									<figcaption align="middle">Cube Mesh Upsampled 5 Times</figcaption>
+								</td>
+							</tr>
+							<br>
+						</table>
+					</div>
+				</li>
+				<li>
+					The asymmetery of the cube occurs because of the asymmetric original mesh. Before, the cube mesh has
+					a single mesh edge that is shared by 2 of the vertices. Since the vertices are updated based on the
+					weighting of the neighbors, the 2 connected ones will remain closer to their original positions and
+					thus the cube looks stretched along the diagonal that is not originally connected.
+				</li>
+				<li>
+					Here are some screenshots of applying subdivision to the cube mesh after pre-processing:
+					<div align="middle">
+						<table>
+							<tr>
+								<td vertical-align="center">
+									<img src="./Images/Task6/sp24-bezier-task6-symmetric-cube-0.png" align="center" />
+									<figcaption align="middle">Preprocessed Cube Mesh</figcaption>
+								</td>
+								<td vertical-align="center">
+									<img src="./Images/Task6/sp24-bezier-task6-symmetric-cube-1.png" align="center" />
+									<figcaption align="middle">Symmetric Cube Mesh Upsampled 1 Time</figcaption>
+								</td>
+							</tr>
+							<tr>
+								<td vertical-align="center">
+									<img src="./Images/Task6/sp24-bezier-task6-symmetric-cube-2.png" align="center" />
+									<figcaption align="middle">Symmetric Cube Mesh Upsampled 2 Times</figcaption>
+								</td>
+								<td vertical-align="center">
+									<img src="./Images/Task6/sp24-bezier-task6-symmetric-cube-3.png" align="center" />
+									<figcaption align="middle">Symmetric Cube Mesh Upsampled 3 Times</figcaption>
+								</td>
+							</tr>
+							<tr>
+								<td vertical-align="center">
+									<img src="./Images/Task6/sp24-bezier-task6-symmetric-cube-4.png" align="center" />
+									<figcaption align="middle">Symmetric Cube Mesh Upsampled 4 Times</figcaption>
+								</td>
+								<td vertical-align="center">
+									<img src="./Images/Task6/sp24-bezier-task6-symmetric-cube-5.png" align="center" />
+									<figcaption align="middle">Symmetric Cube Mesh Upsampled 5 Times</figcaption>
+								</td>
+							</tr>
+							<br>
+						</table>
+					</div>
+				</li>
+				<li>
+					Thus, to make sure that each vertex has the same degree, I preprocessed the
+					cube by splitting the diagonal edge on every single face. This alleviates the asymmetric effect
+					because each vertex will be weighted equally when it is calculating the new vertex position as the
+					mesh is being upsampled. I did not need to flip nor split any edges after the mesh is upsampled and
+					thus is a valid preprocessing.
+				</li>
+			</ul>
 			</p>
 		</div>
 		<br>
