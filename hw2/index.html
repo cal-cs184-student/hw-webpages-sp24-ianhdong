@@ -13,7 +13,7 @@
 			font-weight: 300;
 			font-family: 'Open Sans', sans-serif;
 			color: #121212;
-			background-color: #c1f8cd;
+			background-color: #f6ead7;
 		}
 
 		.bounding-box {
@@ -537,101 +537,198 @@
 			Briefly explain how you implemented the edge split operation and describe any interesting implementation
 			/
 			debugging tricks you have used.
+			<p>
+			<ul>
+				<li>
+					I first started by creating a diagram of each of the half-edges, edges, vertices and faces before
+					and
+					after the flip to ensure that the pointers would be correct. I color coded with red being the new
+					half-edges, edges, vertices, and faces created and black being the older counterparts. Here is the
+					diagram shown below:
+					<div align="middle">
+						<table>
+							<tr>
+								<td vertical-align="center">
+									<img src="./Images/Task5/sp24-bezier-task5-split-diagram.jpg" align="center" />
+									<figcaption align="middle">Before and After Split Diagram</figcaption>
+								</td>
+							</tr>
+							<br>
+						</table>
+					</div>
+				</li>
+				<li>
+					Here are the formal steps I took to implement the edge split operation.
+					<ol>
+						<li>
+							First, I checked if <code>e0->isBoundary()</code> was <code>true</code> to make sure to not
+							split a boundary edge and simply returned if it was.
+						</li>
+						<li>
+							Then, I defined the inner and outer half-edges of the two triangles using the
+							<code>twin()</code> and <code>next()</code> methods. Each of these half-edges corresponded
+							to
+							the 10 half-edges, <code>h0 ... h9</code>, as shown in the diagram above.
+						</li>
+						<li>
+							Next, I defined the vertices of the two triangles using the <code>vertex()</code> method on
+							the
+							appropriate half-edge. Each of these vertices corresponded to the 4 vertices,
+							<code>v0 ... v3</code>, as shown in the diagram above.
+						</li>
+						<li>
+							Afterwards, I defined the edges and faces of the two triangles using the <code>edge()</code>
+							and
+							<code>face()</code> methods on the appropriate half-edge. Each of these edges and faces
+							corresponded to the 5 edges, <code>e0 ... e4</code>, and 2 faces, <code>f0, f1</code>, as
+							shown
+							in
+							the diagram above.
+						</li>
+						<li>
+							In addition, I created 6 new half-edges, 3 new edges, 1 new vertex, and 2 new faces. The new
+							vertex is defined as the center of the edge that is being split while the 2 new faces are the 2 bottom triangles that are created from the split.
+						</li>
+						<li>
+							Then, I updated each of the 16 half-edge pointers using the <code>setNeighbors()</code>
+							method
+							according to the diagram above.
+						</li>
+						<li>
+							Finally, I reassigned the half-edge pointers for each of the 5 vertices, 8 edges, and 4
+							faces
+							according to the diagram above and returned the newly updated <code>e0</code>.
+						</li>
+					</ol>
+					Some tricks I used was to follow my diagram very closely and checking which pointers I was passing
+					into
+					my functions as well as using the additional debugging utilities provided in the spec.
+				</li>
+			</ul>
+			</p>
 		</div>
-		<p>
-		<ul>
-			<li>
 
-			</li>
-		</ul>
-		</p>
-
+		<br>
 
 		<div class="bounding-box">
 			Show screenshots of a mesh before and after some edge splits.
-		<p>
-		<ul>
-			<li>
-				Here are some screenshots of <code>dae/teapot.dae</code> before and after some edge flips.
-				<div align="middle">
-					<table>
-						<tr>
-							<td vertical-align="center">
-								<img src="./Images/Task4/sp24-bezier-task4-before-flip.png" align="center" />
-								<figcaption align="middle">Before Edge Splits</figcaption>
-							</td>
-							<td vertical-align="center">
-								<img src="./Images/Task5/sp24-bezier-task5-after-split.png" align="center" />
-								<figcaption align="middle">After Edge Splits</figcaption>
-							</td>
-						</tr>
-						<br>
-					</table>
-				</div>
-			</li>
-		</ul>
-		</p>
+			<p>
+			<ul>
+				<li>
+					Here are some screenshots of <code>dae/teapot.dae</code> before and after some edge flips.
+					<div align="middle">
+						<table>
+							<tr>
+								<td vertical-align="center">
+									<img src="./Images/Task4/sp24-bezier-task4-before-flip.png" align="center" />
+									<figcaption align="middle">Before Edge Splits</figcaption>
+								</td>
+								<td vertical-align="center">
+									<img src="./Images/Task5/sp24-bezier-task5-after-split.png" align="center" />
+									<figcaption align="middle">After Edge Splits</figcaption>
+								</td>
+							</tr>
+							<br>
+						</table>
+					</div>
+				</li>
+			</ul>
+			</p>
 		</div>
 		<br>
 
 		<div class="bounding-box">
 			Show screenshots of a mesh before and after a combination of both edge splits and edge flips.
-		<p>
-		<ul>
-			<li>
-				Here are some screenshots of <code>dae/teapot.dae</code> before and after some edge flips.
-				<div align="middle">
-					<table>
-						<tr>
-							<td vertical-align="center">
-								<img src="./Images/Task4/sp24-bezier-task4-before-flip.png" align="center" />
-								<figcaption align="middle">Before Edge Flips and Splits</figcaption>
-							</td>
-							<td vertical-align="center">
-								<img src="./Images/Task5/sp24-bezier-task5-after-flip-split.png" align="center" />
-								<figcaption align="middle">After Edge Flips and Splits</figcaption>
-							</td>
-						</tr>
-						<br>
-					</table>
-				</div>
-			</li>
-		</ul>
-		</p>
+			<p>
+			<ul>
+				<li>
+					Here are some screenshots of <code>dae/teapot.dae</code> before and after some edge flips.
+					<div align="middle">
+						<table>
+							<tr>
+								<td vertical-align="center">
+									<img src="./Images/Task4/sp24-bezier-task4-before-flip.png" align="center" />
+									<figcaption align="middle">Before Edge Flips and Splits</figcaption>
+								</td>
+								<td vertical-align="center">
+									<img src="./Images/Task5/sp24-bezier-task5-after-flip-split.png" align="center" />
+									<figcaption align="middle">After Edge Flips and Splits</figcaption>
+								</td>
+							</tr>
+							<br>
+						</table>
+					</div>
+				</li>
+			</ul>
+			</p>
 		</div>
 		<br>
 
 		<div class="bounding-box">
 			Write about your eventful debugging journey, if you have experienced one.
-		<p>
-			YOUR RESPONSE GOES HERE
-		<p>
+			<p>
+				<ul>
+					<li>
+						Learning from my mistakes, I made sure to draw the diagram correctly and to follow it very closely when I was assigning the pointers for each half-edge and the other edges, vertices, and faces. The only issue I ran into was that sometimes when I clicked on an edge or vertex the program would crash and this was because of a segmentation fault. After a while of debugging by rereading my code and my diagram, I realized I had forgot to set on the edge and vertex pointers for the newly updated ones. Then another issue occurred where one of the triangles would turn black and after debugging for a bit I realized I had set the incorrect vertex for one of the newly created half-edge.
+					</li>
+					<li>
+						Here is the incorrect half-edge split:
+						<div align="middle">
+							<table>
+								<tr>
+									<td vertical-align="center">
+										<img src="./Images/Task5/sp24-bezier-task5-incorrect.png" align="center" />
+										<figcaption align="middle">Incorrect Edge Split: Black Triangle</figcaption>
+									</td>
+								</tr>
+								<br>
+							</table>
+						
+					</li>
+				</ul>
+			<p>
 		</div>
+
+		<br>
+
+		<div class="bounding-box">
+			If you have implemented support for boundary edges, show screenshots of your implementation properly handling split operations on boundary edges.
+
+		</div>
+		<br>
 
 
 		<h3 align="middle">Part 6: Loop Subdivision for Mesh Upsampling</h3>
-		<b>
+		<div class="bounding-box">
 			Briefly explain how you implemented the loop subdivision and describe any interesting implementation /
 			debugging tricks you have used.
-		</b>
-		<p>
-			YOUR RESPONSE GOES HERE
-		</p>
+
+			<p>
+				I decided to follow the order of operations as described in the spec. Here are the formal steps I took to implement the loop subdivision:
+				<ol>
+					<li>
+						
+					</li>
+				</ol>
+			</p>
+		</div>
+		
 		<br>
 
 
-		<b>
+		<div class="bounding-box">
 			Take some notes, as well as some screenshots, of your observations on how meshes behave after loop
 			subdivision. What happens to sharp corners and edges? Can you reduce this effect by pre-splitting some
 			edges?
-		</b>
-		<p>
-			YOUR RESPONSE GOES HERE
-		</p>
+			<p>
+				YOUR RESPONSE GOES HERE
+			</p>
+		</div>
+		
 		<br>
 
 
-		<b>
+		<div class="bounding-box">
 			Load dae/cube.dae. Perform several iterations of loop subdivision on the cube. Notice that the cube
 			becomes
 			slightly asymmetric after repeated subdivisions. Can you pre-process the cube with edge flips and splits
@@ -639,26 +736,27 @@
 			that the cube subdivides symmetrically? Document these effects and explain why they occur. Also explain
 			how
 			your pre-processing helps alleviate the effects.
-		</b>
-		<p>
-			YOUR RESPONSE GOES HERE
-		</p>
+
+			<p>
+				YOUR RESPONSE GOES HERE
+			</p>
+		</div>
 		<br>
 
 
-		<b>
+		<div class="bounding-box">
 			If you have implemented any extra credit extensions, explain what you did and document how they work
 			with
 			screenshots.
-		</b>
-		<p>
-			YOUR RESPONSE GOES HERE
-		</p>
+			<p>
+				I did not implement any extra credit extensions.
+			</p>
+		</div>
 		<br>
 
 
 		<h3 align="middle">Part 7 (Optional, Possible Extra Credit)</h3>
-		<b>
+		<!-- <b>
 			Save your best polygon mesh as partsevenmodel.dae in your docs folder and show us a screenshot of the
 			mesh
 			in your write-up.
@@ -687,7 +785,7 @@
 		</b>
 		<p>
 			YOUR RESPONSE GOES HERE
-		</p>
+		</p> -->
 		<br>
 
 
