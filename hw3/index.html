@@ -285,48 +285,48 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
     YOUR RESPONSE GOES HERE
   </p>
 
-  <h3>
-    Show some images rendered with both implementations of the direct lighting function.
-  </h3>
-  <!-- Example of including multiple figures -->
-  <div align="middle">
-    <table style="width:100%">
-      <!-- Header -->
-      <tr align="center">
-        <th>
-          <b>Uniform Hemisphere Sampling</b>
-        </th>
-        <th>
-          <b>Light Sampling</b>
-        </th>
-      </tr>
-      <br>
-      <tr align="center">
-        <td>
-          <img src="images/your_file.png" align="middle" width="400px" />
-          <figcaption>example1.dae</figcaption>
-        </td>
-        <td>
-          <img src="images/your_file.png" align="middle" width="400px" />
-          <figcaption>example1.dae</figcaption>
-        </td>
-      </tr>
-      <br>
-      <tr align="center">
-        <td>
-          <img src="images/your_file.png" align="middle" width="400px" />
-          <figcaption>example2.dae</figcaption>
-        </td>
-        <td>
-          <img src="images/your_file.png" align="middle" width="400px" />
-          <figcaption>example2.dae</figcaption>
-        </td>
-      </tr>
-      <br>
-    </table>
+  <div class="bounding-box">
+    <h3>
+      Show some images rendered with both implementations of the direct lighting function.
+    </h3>
+    <!-- Example of including multiple figures -->
+    <div align="middle">
+      <table style="width:100%">
+        <!-- Header -->
+        <tr align="center">
+          <th>
+            <b>Uniform Hemisphere Sampling</b>
+          </th>
+          <th>
+            <b>Light Sampling</b>
+          </th>
+        </tr>
+        <tr align="center">
+          <td>
+            <img src="./Images/Task3/sp24-raytracer-task3-CBspheres_lambertian-hemisphere.png" align="middle" width="400px" />
+            <figcaption><code class="highlighter-rouge">CBspheres_lambertian.dae</code></figcaption>
+          </td>
+          <td>
+            <img src="./Images/Task3/sp24-raytracer-task3-CBspheres_lambertian-importance.png" align="middle" width="400px" />
+            <figcaption><code class="highlighter-rouge">CBspheres_lambertian.dae</code></figcaption>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            <img src="./Images/Task3/sp24-raytracer-task3-CBbunny-hemisphere.png" align="middle" width="400px" />
+            <figcaption><code class="highlighter-rouge">CBbunny.dae</code></figcaption>
+          </td>
+          <td>
+            <img src="./Images/Task3/sp24-raytracer-task3-CBbunny-importance.png" align="middle" width="400px" />
+            <figcaption><code class="highlighter-rouge">CBbunny.dae</code></figcaption>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <br>
   </div>
   <br>
-
+  <div class="bounding-box">
   <h3>
     Focus on one particular scene with at least one area light and compare the noise levels in <b>soft shadows</b>
     when rendering with 1, 4, 16, and 64 light rays (the -l flag) and with 1 sample per pixel (the -s flag) using
@@ -337,21 +337,21 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
     <table style="width:100%">
       <tr align="center">
         <td>
-          <img src="images/your_file.png" align="middle" width="200px" />
+          <img src="./Images/Task3/sp24-raytracer-task3-CBspheres_lambertian-1.png" align="middle" width="400px" />
           <figcaption>1 Light Ray (example1.dae)</figcaption>
         </td>
         <td>
-          <img src="images/your_file.png" align="middle" width="200px" />
+          <img src="./Images/Task3/sp24-raytracer-task3-CBspheres_lambertian-4.png" align="middle" width="400px" />
           <figcaption>4 Light Rays (example1.dae)</figcaption>
         </td>
       </tr>
       <tr align="center">
         <td>
-          <img src="images/your_file.png" align="middle" width="200px" />
+          <img src="./Images/Task3/sp24-raytracer-task3-CBspheres_lambertian-16.png" align="middle" width="400px" />
           <figcaption>16 Light Rays (example1.dae)</figcaption>
         </td>
         <td>
-          <img src="images/your_file.png" align="middle" width="200px" />
+          <img src="./Images/Task3/sp24-raytracer-task3-CBspheres_lambertian-64.png" align="middle" width="400px" />
           <figcaption>64 Light Rays (example1.dae)</figcaption>
         </td>
       </tr>
@@ -360,6 +360,7 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
   <p>
     YOUR EXPLANATION GOES HERE
   </p>
+  </div>
   <br>
 
   <h3>
@@ -380,63 +381,79 @@ For <code>CBbunny.dae</code>, compare rendered views with max_ray_depth set to 0
 Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays.
 You will probably want to use the instructional machines for the above renders in order to not burn up your own computer for hours. -->
 
-  <h3>
-    Walk through your implementation of the indirect lighting function.
-  </h3>
-  <p>
-    YOUR RESPONSE GOES HERE
-  </p>
-  <br>
-
-  <h3>
-    Show some images rendered with global (direct and indirect) illumination. Use 1024 samples per pixel.
-  </h3>
-  <!-- Example of including multiple figures -->
-  <div align="middle">
-    <table style="width:100%">
-      <tr align="center">
-        <td>
-          <img src="images/your_file.png" align="middle" width="400px" />
-          <figcaption>example1.dae</figcaption>
-        </td>
-        <td>
-          <img src="images/your_file.png" align="middle" width="400px" />
-          <figcaption>example2.dae</figcaption>
-        </td>
-      </tr>
-    </table>
+  <div class="bounding-box">
+    <h3>
+      Walk through your implementation of the indirect lighting function.
+    </h3>
+    <p>
+      YOUR RESPONSE GOES HERE
+    </p>
+    <br>
   </div>
   <br>
 
-  <h3>
-    Pick one scene and compare rendered views first with only direct illumination, then only indirect illumination.
-    Use 1024 samples per pixel. (You will have to edit PathTracer::at_least_one_bounce_radiance(...) in your code to
-    generate these views.)
-  </h3>
-  <!-- Example of including multiple figures -->
-  <div align="middle">
-    <table style="width:100%">
-      <tr align="center">
-        <td>
-          <img src="images/your_file.png" align="middle" width="400px" />
-          <figcaption>Only direct illumination (example1.dae)</figcaption>
-        </td>
-        <td>
-          <img src="images/your_file.png" align="middle" width="400px" />
-          <figcaption>Only indirect illumination (example1.dae)</figcaption>
-        </td>
-      </tr>
-    </table>
+  <div class="bounding-box">
+    <h3>
+      Show some images rendered with global (direct and indirect) illumination. Use 1024 samples per pixel.
+    </h3>
+    <!-- Example of including multiple figures -->
+    Here are some images rendered with global (direct and indirect) illumination:
+    <br><br>
+    <div align="middle">
+      <table style="width:100%">
+        <tr align="center">
+          <td>
+            <img src="./Images/Task4/sp24-raytracer-task4-dragon-1024.png" align="middle" width="400px" />
+            <figcaption><code class="highlighter-rouge">dragon.dae</code></figcaption>
+          </td>
+          <td>
+            <img src="./Images/Task4/sp24-raytracer-task4-banana-1024.png" align="middle" width="400px" />
+            <figcaption><code class="highlighter-rouge">banana.dae</code></figcaption>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <br>
   </div>
   <br>
-  <p>
-    YOUR EXPLANATION GOES HERE
-  </p>
+  <div class="bounding-box">
+    <h3>
+      Pick one scene and compare rendered views first with only direct illumination, then only indirect illumination.
+      Use 1024 samples per pixel. (You will have to edit PathTracer::at_least_one_bounce_radiance(...) in your code to
+      generate these views.)
+    </h3>
+    <!-- Example of including multiple figures -->
+    Here are the rendered images with only direct illumination and only indirect illumination:
+    <br><br>
+    <div align="middle">
+      <table style="width:100%">
+        <tr align="center">
+          <td>
+            <img src="./Images/Task4/sp24-raytracer-task4-CBspheres_lambertian-direct.png" align="middle"
+              width="400px" />
+            <figcaption>Only direct illumination <code class="highlighter-rouge">(CBspheres_lambertian.dae)</code>
+            </figcaption>
+          </td>
+          <td>
+            <img src="./Images/Task4/sp24-raytracer-task4-CBspheres_lambertian-indirect.png" align="middle"
+              width="400px" />
+            <figcaption>Only indirect illumination <code class="highlighter-rouge">(CBspheres_lambertian.dae)</code>
+            </figcaption>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <p>
+      YOUR EXPLANATION GOES HERE
+    </p>
+  </div>
+  <br>
   <br>
   <div class="bounding-box">
     <h3>
       For <code class="highlighter-rouge">CBbunny.dae</code>, render the mth bounce of light with <code
-        class="highlighter-rouge">max_ray_depth</code> set to 0, 1, 2, 3, 4, and 5 (the <code class="highlighter-rouge">-m</code> flag), and
+        class="highlighter-rouge">max_ray_depth</code> set to 0, 1, 2, 3, 4, and 5 (the <code
+        class="highlighter-rouge">-m</code> flag), and
       <code class="highlighter-rouge">isAccumBounces=false</code>. Explain in your writeup what you see for the 2nd and
       3rd bounce of light, and how it
       contributes to the quality of the rendered image compared to rasterization. Use 1024 samples per pixel.
@@ -488,7 +505,9 @@ You will probably want to use the instructional machines for the above renders i
 
   <div class="bounding-box">
     <h3>
-      For <code class="highlighter-rouge">CBbunny.dae</code>, compare rendered views with <code class="highlighter-rouge">max_ray_depth</code> set to 0, 1, 2, 3, 4 and 5 (the <code class="highlighter-rouge">-m</code> flag).
+      For <code class="highlighter-rouge">CBbunny.dae</code>, compare rendered views with <code
+        class="highlighter-rouge">max_ray_depth</code> set to 0, 1, 2, 3, 4 and 5 (the <code
+        class="highlighter-rouge">-m</code> flag).
       Use 1024
       samples per pixel.
     </h3>
@@ -535,14 +554,15 @@ You will probably want to use the instructional machines for the above renders i
     </p>
     <br>
   </div>
-  <br><br>
-
-
+  <br>
   <div class="bounding-box">
     <h3>
-      For <code class="highlighter-rouge">CBbunny.dae</code>, output the Russian Roulette rendering with <code class="highlighter-rouge">max_ray_depth</code> set to 0, 1, 2, 3, 4, and 100 (the -m flag). Use 1024 samples per pixel.
+      For <code class="highlighter-rouge">CBbunny.dae</code>, output the Russian Roulette rendering with <code
+        class="highlighter-rouge">max_ray_depth</code> set to 0, 1, 2, 3, 4, and 100 (the -m flag). Use 1024 samples per
+      pixel.
     </h3>
-    Here are the rendered Russian Roulette images with <code class="highlighter-rouge">max_ray_depth</code> set to 0, 1, 2, 3, 4, and 100:
+    Here are the rendered Russian Roulette images with <code class="highlighter-rouge">max_ray_depth</code> set to 0, 1,
+    2, 3, 4, and 100:
     <br> <br>
     <!-- Example of including multiple figures -->
     <div align="middle">
@@ -585,61 +605,61 @@ You will probably want to use the instructional machines for the above renders i
     </p>
     <br>
   </div>
-  <br><br>
-  <div class="bounding-box">
-  <h3>
-    Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8,
-    16, 64, and 1024. Use 4 light rays.
-  </h3>
-  <!-- Example of including multiple figures -->
-  Here are the rendered images with various sample-per-pixel rates:
-  <br><br>
-  <div align="middle">
-    <table style="width:100%">
-      <tr align="center">
-        <td>
-          <img src="./Images/Task4/sp24-raytracer-task4-building-1.png" align="middle" width="400px" />
-          <figcaption>1 sample per pixel (example1.dae)</figcaption>
-        </td>
-        <td>
-          <img src="./Images/Task4/sp24-raytracer-task4-building-2.png" align="middle" width="400px" />
-          <figcaption>2 samples per pixel (example1.dae)</figcaption>
-        </td>
-      </tr>
-      <tr align="center">
-        <td>
-          <img src="./Images/Task4/sp24-raytracer-task4-building-4.png" align="middle" width="400px" />
-          <figcaption>4 samples per pixel (example1.dae)</figcaption>
-        </td>
-        <td>
-          <img src="./Images/Task4/sp24-raytracer-task4-building-8.png" align="middle" width="400px" />
-          <figcaption>8 samples per pixel (example1.dae)</figcaption>
-        </td>
-      </tr>
-      <tr align="center">
-        <td>
-          <img src="./Images/Task4/sp24-raytracer-task4-building-16.png" align="middle" width="400px" />
-          <figcaption>16 samples per pixel (example1.dae)</figcaption>
-        </td>
-        <td>
-          <img src="./Images/Task4/sp24-raytracer-task4-building-64.png" align="middle" width="400px" />
-          <figcaption>64 samples per pixel (example1.dae)</figcaption>
-        </td>
-      </tr>
-      <tr align="center">
-        <td>
-          <img src="./Images/Task4/sp24-raytracer-task4-building-1024.png" align="middle" width="400px" />
-          <figcaption>1024 samples per pixel (example1.dae)</figcaption>
-        </td>
-      </tr>
-    </table>
-  </div>
   <br>
-  <p>
-    YOUR EXPLANATION GOES HERE
-  </p>
-  <hr>
+  <div class="bounding-box">
+    <h3>
+      Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8,
+      16, 64, and 1024. Use 4 light rays.
+    </h3>
+    <!-- Example of including multiple figures -->
+    Here are the rendered images with various sample-per-pixel rates:
+    <br><br>
+    <div align="middle">
+      <table style="width:100%">
+        <tr align="center">
+          <td>
+            <img src="./Images/Task4/sp24-raytracer-task4-building-1.png" align="middle" width="400px" />
+            <figcaption>1 sample per pixel (example1.dae)</figcaption>
+          </td>
+          <td>
+            <img src="./Images/Task4/sp24-raytracer-task4-building-2.png" align="middle" width="400px" />
+            <figcaption>2 samples per pixel (building.dae)</figcaption>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            <img src="./Images/Task4/sp24-raytracer-task4-building-4.png" align="middle" width="400px" />
+            <figcaption>4 samples per pixel (building.dae)</figcaption>
+          </td>
+          <td>
+            <img src="./Images/Task4/sp24-raytracer-task4-building-8.png" align="middle" width="400px" />
+            <figcaption>8 samples per pixel (building.dae)</figcaption>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            <img src="./Images/Task4/sp24-raytracer-task4-building-16.png" align="middle" width="400px" />
+            <figcaption>16 samples per pixel (building.dae)</figcaption>
+          </td>
+          <td>
+            <img src="./Images/Task4/sp24-raytracer-task4-building-64.png" align="middle" width="400px" />
+            <figcaption>64 samples per pixel (building.dae)</figcaption>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            <img src="./Images/Task4/sp24-raytracer-task4-building-1024.png" align="middle" width="400px" />
+            <figcaption>1024 samples per pixel (building.dae)</figcaption>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <br>
+    <p>
+      YOUR EXPLANATION GOES HERE
+    </p>
   </div>
+  <hr>
   <br><br>
 
 
@@ -687,7 +707,7 @@ You will probably want to use the instructional machines for the above renders i
             <figcaption>Sample rate image <code>(bench.dae)</code></figcaption>
           </td>
         </tr>
-        <tr align="center">
+        <!-- <tr align="center">
           <td>
             <img src="./Images/Task5/sp24-raytracer-task5-banana-rendered.png" align="middle" width="400px" />
             <figcaption>Rendered image <code>(banana.dae)</code></figcaption>
@@ -696,7 +716,7 @@ You will probably want to use the instructional machines for the above renders i
             <img src="./Images/Task5/sp24-raytracer-task5-banana-sample-rate.png" align="middle" width="400px" />
             <figcaption>Sample rate image <code>(banana.dae)</code></figcaption>
           </td>
-        </tr>
+        </tr> -->
       </table>
     </div>
   </div>
