@@ -83,7 +83,7 @@
       color: #b00505;
       background-color: rgb(247, 222, 222);
       border-radius: 4px;
-      padding: 3px;
+      padding: 2px;
     }
   </style>
   <title>CS 184 Mesh Edit</title>
@@ -269,7 +269,8 @@ Compare rendering times on a few scenes with moderately complex geometries with 
   <p>
     YOUR RESPONSE GOES HERE
   </p>
-  <br>
+  <hr>
+  <br><br>
 
   <h2 align="middle">Section III: Direct Illumination (20 Points)</h2>
   <!-- Walk through both implementations of the direct lighting function.
@@ -367,14 +368,15 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
   <p>
     YOUR RESPONSE GOES HERE
   </p>
-  <br>
+  <hr>
+  <br><br>
 
 
   <h2 align="middle">Section IV: Global Illumination (20 Points)</h2>
   <!-- Walk through your implementation of the indirect lighting function.
 Show some images rendered with global (direct and indirect) illumination. Use 1024 samples per pixel.
 Pick one scene and compare rendered views first with only direct illumination, then only indirect illumination. Use 1024 samples per pixel. (You will have to edit PathTracer::at_least_one_bounce_radiance(...) in your code to generate these views.)
-For <code>CBbunny.dae<code>, compare rendered views with max_ray_depth set to 0, 1, 2, 3, and 100 (the -m flag). Use 1024 samples per pixel.
+For <code>CBbunny.dae</code>, compare rendered views with max_ray_depth set to 0, 1, 2, 3, and 100 (the -m flag). Use 1024 samples per pixel.
 Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays.
 You will probably want to use the instructional machines for the above renders in order to not burn up your own computer for hours. -->
 
@@ -433,41 +435,46 @@ You will probably want to use the instructional machines for the above renders i
   <br>
   <div class="bounding-box">
     <h3>
-      For <code>CBbunny.dae<code>, render the mth bounce of light with max_ray_depth set to 0, 1, 2, 3, 4, and 5 (the -m flag), and
-      isAccumBounces=false. Explain in your writeup what you see for the 2nd and 3rd bounce of light, and how it
+      For <code class="highlighter-rouge">CBbunny.dae</code>, render the mth bounce of light with <code
+        class="highlighter-rouge">max_ray_depth</code> set to 0, 1, 2, 3, 4, and 5 (the <code class="highlighter-rouge">-m</code> flag), and
+      <code class="highlighter-rouge">isAccumBounces=false</code>. Explain in your writeup what you see for the 2nd and
+      3rd bounce of light, and how it
       contributes to the quality of the rendered image compared to rasterization. Use 1024 samples per pixel.
     </h3>
+    Here are the rendered images with <code class="highlighter-rouge">max_ray_depth</code> set to 0, 1, 2, 3, 4, and 5
+    and <code class="highlighter-rouge">isAccumBounces=false</code>:
+    <br> <br>
     <!-- Example of including multiple figures -->
     <div align="middle">
       <table style="width:100%">
         <tr align="center">
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-bunny-false-0.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 0 (<code>CBbunny.dae<code>)</figcaption>
+            <figcaption>max_ray_depth = 0 (<code>CBbunny.dae</code>)</figcaption>
           </td>
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-bunny-false-1.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 1 (<code>CBbunny.dae<code>)</figcaption>
+            <figcaption>max_ray_depth = 1 (<code>CBbunny.dae</code>)</figcaption>
           </td>
         </tr>
         <tr align="center">
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 2 (<code>CBbunny.dae<code>)</figcaption>
+            <img src="./Images/Task4/sp24-raytracer-task4-bunny-false-2.png" align="middle" width="400px" />
+            <figcaption>max_ray_depth = 2 (<code>CBbunny.dae</code>)</figcaption>
           </td>
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 3 (<code>CBbunny.dae<code>)</figcaption>
+            <img src="./Images/Task4/sp24-raytracer-task4-bunny-false-3.png" align="middle" width="400px" />
+            <figcaption>max_ray_depth = 3 (<code>CBbunny.dae</code>)</figcaption>
           </td>
         </tr>
         <tr align="center">
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 4 (<code>CBbunny.dae<code>)</figcaption>
+            <img src="./Images/Task4/sp24-raytracer-task4-bunny-false-4.png" align="middle" width="400px" />
+            <figcaption>max_ray_depth = 4 (<code>CBbunny.dae</code>)</figcaption>
           </td>
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 5 (<code>CBbunny.dae<code>)</figcaption>
+            <img src="./Images/Task4/sp24-raytracer-task4-bunny-false-5.png" align="middle" width="400px" />
+            <figcaption>max_ray_depth = 5 (<code>CBbunny.dae</code>)</figcaption>
           </td>
         </tr>
       </table>
@@ -479,39 +486,45 @@ You will probably want to use the instructional machines for the above renders i
   </div>
   <br>
 
-
   <div class="bounding-box">
     <h3>
-      For <code>CBbunny.dae<code>, compare rendered views with max_ray_depth set to 0, 1, 2, 3, and 100 (the -m flag). Use 1024
+      For <code class="highlighter-rouge">CBbunny.dae</code>, compare rendered views with <code class="highlighter-rouge">max_ray_depth</code> set to 0, 1, 2, 3, 4 and 5 (the <code class="highlighter-rouge">-m</code> flag).
+      Use 1024
       samples per pixel.
     </h3>
     <!-- Example of including multiple figures -->
+    Here are the rendered images with <code class="highlighter-rouge">max_ray_depth</code> set to 0, 1, 2, 3, 4, and 5:
+    <br> <br>
     <div align="middle">
       <table style="width:100%">
         <tr align="center">
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 0 (<code>CBbunny.dae<code>)</figcaption>
+            <img src="./Images/Task4/sp24-raytracer-task4-bunny-false-0.png" align="middle" width="400px" />
+            <figcaption><code class="highlighter-rouge">max_ray_depth = 0 (CBbunny.dae)</code></figcaption>
           </td>
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 1 (<code>CBbunny.dae<code>)</figcaption>
-          </td>
-        </tr>
-        <tr align="center">
-          <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 2 (<code>CBbunny.dae<code>)</figcaption>
-          </td>
-          <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 3 (<code>CBbunny.dae<code>)</figcaption>
+            <img src="./Images/Task4/sp24-raytracer-task4-bunny-1.png" align="middle" width="400px" />
+            <figcaption>max_ray_depth = 1 (<code>CBbunny.dae)</code></figcaption>
           </td>
         </tr>
         <tr align="center">
           <td>
-            <img src="images/your_file.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 100 (<code>CBbunny.dae<code>)</figcaption>
+            <img src="./Images/Task4/sp24-raytracer-task4-bunny-2.png" align="middle" width="400px" />
+            <figcaption>max_ray_depth = 2 (<code>CBbunny.dae</code>)</figcaption>
+          </td>
+          <td>
+            <img src="./Images/Task4/sp24-raytracer-task4-bunny-3.png" align="middle" width="400px" />
+            <figcaption>max_ray_depth = 3 (<code>CBbunny.dae</code>)</figcaption>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            <img src="./Images/Task4/sp24-raytracer-task4-bunny-4.png" align="middle" width="400px" />
+            <figcaption>max_ray_depth = 4 (<code>CBbunny.dae</code>)</figcaption>
+          </td>
+          <td>
+            <img src="./Images/Task4/sp24-raytracer-task4-bunny-5.png" align="middle" width="400px" />
+            <figcaption>max_ray_depth = 5 (<code>CBbunny.dae</code>)</figcaption>
           </td>
         </tr>
       </table>
@@ -522,47 +535,100 @@ You will probably want to use the instructional machines for the above renders i
     </p>
     <br>
   </div>
+  <br><br>
 
+
+  <div class="bounding-box">
+    <h3>
+      For <code class="highlighter-rouge">CBbunny.dae</code>, output the Russian Roulette rendering with <code class="highlighter-rouge">max_ray_depth</code> set to 0, 1, 2, 3, 4, and 100 (the -m flag). Use 1024 samples per pixel.
+    </h3>
+    Here are the rendered Russian Roulette images with <code class="highlighter-rouge">max_ray_depth</code> set to 0, 1, 2, 3, 4, and 100:
+    <br> <br>
+    <!-- Example of including multiple figures -->
+    <div align="middle">
+      <table style="width:100%">
+        <tr align="center">
+          <td>
+            <img src="./Images/Task4/sp24-raytracer-task4-bunny-false-0.png" align="middle" width="400px" />
+            <figcaption>max_ray_depth = 0 (<code>CBbunny.dae</code>)</figcaption>
+          </td>
+          <td>
+            <img src="./Images/Task4/sp24-raytracer-task4-bunny-russian-1.png" align="middle" width="400px" />
+            <figcaption>max_ray_depth = 1 (<code>CBbunny.dae</code>)</figcaption>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            <img src="./Images/Task4/sp24-raytracer-task4-bunny-russian-2.png" align="middle" width="400px" />
+            <figcaption>max_ray_depth = 2 (<code>CBbunny.dae</code>)</figcaption>
+          </td>
+          <td>
+            <img src="./Images/Task4/sp24-raytracer-task4-bunny-russian-3.png" align="middle" width="400px" />
+            <figcaption>max_ray_depth = 3 (<code>CBbunny.dae</code>)</figcaption>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            <img src="./Images/Task4/sp24-raytracer-task4-bunny-russian-4.png" align="middle" width="400px" />
+            <figcaption>max_ray_depth = 4 (<code>CBbunny.dae</code>)</figcaption>
+          </td>
+          <td>
+            <img src="./Images/Task4/sp24-raytracer-task4-bunny-russian-100.png" align="middle" width="400px" />
+            <figcaption>max_ray_depth = 100 (<code>CBbunny.dae</code>)</figcaption>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <br>
+    <p>
+      YOUR EXPLANATION GOES HERE
+    </p>
+    <br>
+  </div>
+  <br><br>
+  <div class="bounding-box">
   <h3>
     Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8,
     16, 64, and 1024. Use 4 light rays.
   </h3>
   <!-- Example of including multiple figures -->
+  Here are the rendered images with various sample-per-pixel rates:
+  <br><br>
   <div align="middle">
     <table style="width:100%">
       <tr align="center">
         <td>
-          <img src="images/your_file.png" align="middle" width="400px" />
+          <img src="./Images/Task4/sp24-raytracer-task4-building-1.png" align="middle" width="400px" />
           <figcaption>1 sample per pixel (example1.dae)</figcaption>
         </td>
         <td>
-          <img src="images/your_file.png" align="middle" width="400px" />
+          <img src="./Images/Task4/sp24-raytracer-task4-building-2.png" align="middle" width="400px" />
           <figcaption>2 samples per pixel (example1.dae)</figcaption>
         </td>
       </tr>
       <tr align="center">
         <td>
-          <img src="images/your_file.png" align="middle" width="400px" />
+          <img src="./Images/Task4/sp24-raytracer-task4-building-4.png" align="middle" width="400px" />
           <figcaption>4 samples per pixel (example1.dae)</figcaption>
         </td>
         <td>
-          <img src="images/your_file.png" align="middle" width="400px" />
+          <img src="./Images/Task4/sp24-raytracer-task4-building-8.png" align="middle" width="400px" />
           <figcaption>8 samples per pixel (example1.dae)</figcaption>
         </td>
       </tr>
       <tr align="center">
         <td>
-          <img src="images/your_file.png" align="middle" width="400px" />
+          <img src="./Images/Task4/sp24-raytracer-task4-building-16.png" align="middle" width="400px" />
           <figcaption>16 samples per pixel (example1.dae)</figcaption>
         </td>
         <td>
-          <img src="images/your_file.png" align="middle" width="400px" />
+          <img src="./Images/Task4/sp24-raytracer-task4-building-64.png" align="middle" width="400px" />
           <figcaption>64 samples per pixel (example1.dae)</figcaption>
         </td>
       </tr>
       <tr align="center">
         <td>
-          <img src="images/your_file.png" align="middle" width="400px" />
+          <img src="./Images/Task4/sp24-raytracer-task4-building-1024.png" align="middle" width="400px" />
           <figcaption>1024 samples per pixel (example1.dae)</figcaption>
         </td>
       </tr>
@@ -572,7 +638,9 @@ You will probably want to use the instructional machines for the above renders i
   <p>
     YOUR EXPLANATION GOES HERE
   </p>
-  <br>
+  <hr>
+  </div>
+  <br><br>
 
 
   <h2 align="middle">Section V: Adaptive Sampling (20 Points)</h2>
@@ -594,8 +662,8 @@ You will probably want to use the instructional machines for the above renders i
       image, which shows your how your adaptive sampling changes depending on which part of the image you are
       rendering, and your noise-free rendered result. Use 1 sample per light and at least 5 for max ray depth.
     </h3>
-    Here are the rendered and their sample rate images through adaptive sampling:
-    <br>
+    Here are the rendered and their adaptive sampled sample rate images:
+    <br> <br>
     <!-- Example of including multiple figures -->
     <div align="middle">
       <table style="width:100%">
@@ -603,34 +671,34 @@ You will probably want to use the instructional machines for the above renders i
           <td>
             <img src="./Images/Task5/sp24-raytracer-task5-walle-rendered.png" align="middle" width="400px" />
             <figcaption>Rendered image <code>(wall-e.dae)</code></figcaption>
-      </td>
-      <td>
-        <img src="./Images/Task5/sp24-raytracer-task5-walle-sample-rate.png" align="middle" width="400px" />
-        <figcaption>Sample rate image <code>(wall-e.dae)</code></figcaption>
-      </td>
-      </tr>
-      <tr align="center">
-        <td>
-          <img src="./Images/Task5/sp24-raytracer-task5-bench-rendered.png" align="middle" width="400px" />
-          <figcaption>Rendered image <code>(bench.dae)</code></figcaption>
-        </td>
-        <td>
-          <img src="./Images/Task5/sp24-raytracer-task5-bench-sample-rate.png" align="middle" width="400px" />
-          <figcaption>Sample rate image <code>(bench.dae)</code></figcaption>
-        </td>
-      </tr>
-      <tr align="center">
-        <td>
-          <img src="./Images/Task5/sp24-raytracer-task5-banana-rendered.png" align="middle" width="400px" />
-          <figcaption>Rendered image <code>(banana.dae)</code></figcaption>
-        </td>
-        <td>
-          <img src="./Images/Task5/sp24-raytracer-task5-banana-sample-rate.png" align="middle" width="400px" />
-          <figcaption>Sample rate image <code>(banana.dae)</code></figcaption>
-        </td>
-      </tr>
+          </td>
+          <td>
+            <img src="./Images/Task5/sp24-raytracer-task5-walle-sample-rate.png" align="middle" width="400px" />
+            <figcaption>Sample rate image <code>(wall-e.dae)</code></figcaption>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            <img src="./Images/Task5/sp24-raytracer-task5-bench-rendered.png" align="middle" width="400px" />
+            <figcaption>Rendered image <code>(bench.dae)</code></figcaption>
+          </td>
+          <td>
+            <img src="./Images/Task5/sp24-raytracer-task5-bench-sample-rate.png" align="middle" width="400px" />
+            <figcaption>Sample rate image <code>(bench.dae)</code></figcaption>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            <img src="./Images/Task5/sp24-raytracer-task5-banana-rendered.png" align="middle" width="400px" />
+            <figcaption>Rendered image <code>(banana.dae)</code></figcaption>
+          </td>
+          <td>
+            <img src="./Images/Task5/sp24-raytracer-task5-banana-sample-rate.png" align="middle" width="400px" />
+            <figcaption>Sample rate image <code>(banana.dae)</code></figcaption>
+          </td>
+        </tr>
       </table>
-  </div>
+    </div>
   </div>
   <br>
 
