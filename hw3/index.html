@@ -108,7 +108,7 @@
   <h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2024</h1>
   <h1 align="middle"><a href="https://cal-cs184-student.github.io/hw-webpages-sp24-ianhdong/hw3/index.html">Homework
       3: PathTracer</a></h1>
-  <h2 align="middle">Ian Dong</h2>
+  <h2 align="middle">Ian Dong and Colin Steidtmann</h2>
 
   <br><br>
 
@@ -117,11 +117,13 @@
   <div class="bounding-box">
 
     <h2 align="middle">Overview</h2>
-    In this homework, I implemented a path tracing renderer. First, I worked on generating camera rays from image space
-    to sensor in camera space and their intersection with triangles and spheres. Then, I built a bounding volume
-    hierarchy to accelerate ray intersection tests and speed up the path tracers rendering. Afterwards, I explored
-    direct illumination to simulate light sources and render images with realistic shadowing. Then, I implemented global
-    illumination to simulate indirect lighting and reflections using diffuse BSDF. Finally, I implemented adaptive
+    In this homework, we implemented a path tracing renderer. First, we worked on generating camera rays from image
+    space
+    to sensor in camera space and their intersection with triangles and spheres. Then, we built a bounding volume
+    hierarchy to accelerate ray intersection tests and speed up the path tracers rendering. Afterwards, we explored
+    direct illumination to simulate light sources and render images with realistic shadowing. Then, we implemented
+    global
+    illumination to simulate indirect lighting and reflections using diffuse BSDF. Finally, we implemented adaptive
     sampling to reduce noise
     in the rendered images.
     <br><br>
@@ -150,22 +152,22 @@ Show images with normal shading for a few small .dae files. -->
       <!-- </b> -->
     </h3>
     <p>
-      For the ray generation portion of the rendering pipeline, I first made sure to find the boundaries of the
+      For the ray generation portion of the rendering pipeline, we first made sure to find the boundaries of the
       camera space by calculating \(\text{tan}(\frac{\text{hFov}}{2})\) and \(\text{tan}(\frac{\text{vFov}}{2})\) since
       the bottom left corner is defined as (\(-\text{tan}(\frac{\text{hFov}}{2})\), \(\text{tan}(\frac{\text{vFov}}{2})
       -1\)) and the top right corner is defined as (\(\text{tan}(\frac{\text{hFov}}{2})\),
-      \(\text{tan}(\frac{\text{vFov}}{2}), -1\)). Then, I used the instance variables <code
+      \(\text{tan}(\frac{\text{vFov}}{2}), -1\)). Then, we used the instance variables <code
         class="highlighter-rouge">hFov</code> and <code class="highlighter-rouge">vFov</code> which are in degrees to
       calculate the height and width length before using linear interpolation to find the camera image coordinates.
-      Afterwards, I used <code class="highlighter-rouge">this->c2w</code> to convert my camera image coordinates into
-      world space coordinates and also normalized the direction vector. Finally, I constructed the ray with this vector
+      Afterwards, we used <code class="highlighter-rouge">this->c2w</code> to convert my camera image coordinates into
+      world space coordinates and also normalized the direction vector. Finally, we constructed the ray with this vector
       and defined the <code class="highlighter-rouge">min_t</code> and <code class="highlighter-rouge">max_t</code>.
     </p>
     <p>
-      For the primitive intersection portion of the rendering pipeline, I generated <code
+      For the primitive intersection portion of the rendering pipeline, we generated <code
         class="highlighter-rouge">num_samples</code> using <code
-        class="highlighter-rouge">this->gridSampler->get_sample()</code>. I made sure to normalize the coordinates
-      before calling on the previously implemented method to generate the ray. Finally, I called <code
+        class="highlighter-rouge">this->gridSampler->get_sample()</code>. We made sure to normalize the coordinates
+      before calling on the previously implemented method to generate the ray. Finally, we called <code
         class="highlighter-rouge">this->est_radiance_global_illumination()</code> to get the sample radiance and
       averaged
       the radiance to update the pixel in the buffer.
@@ -178,7 +180,17 @@ Show images with normal shading for a few small .dae files. -->
       Explain the triangle intersection algorithm you implemented in your own words.
     </h3>
     <p>
-      For the ray-triangle intersection, I implemented Moeller-Trumbore algorithm.
+      For the ray-triangle intersection, we implemented the Moller-Trumbore formula. This algorithm takes in a ray with
+      origin, \(o\), and direction, \(d\), as well as a triangle with vertices, \(p_0\), \(p_1\), and \(p_2\) and solves
+      the following equation:
+      $$\vec{O} + t\vec{D} = (1 - b_1 - b_2) \vec{p}_0 + b_1 \vec{p}_1.$$
+      We followed the algorithm by defining each of the variables and solving for \(t\), \(b_1\), and \(b_2\). If \(t\)
+      was not within the range of the minimum and maximum time range,
+      the ray would be parallel to the triangle and thus would not intersect with the triangle given this time range.
+      Otherwise, the ray would intersect within the triangle's plane. However, we needed to make sure it was within the
+      triangle so we checked the barycentric coordinates to ensure they were both within [0, 1]. If they were, we
+      updated
+      the intersection struct.
     </p>
   </div>
   <br>
@@ -217,58 +229,129 @@ Show images with normal shading for a few small .dae files. -->
   </div>
 
   <hr>
-  <br><br>
+  <br>
 
 
   <h2 align="middle">Section II: Bounding Volume Hierarchy (20 Points)</h2>
   <!-- Walk through your BVH construction algorithm. Explain the heuristic you chose for picking the splitting point.
 Show images with normal shading for a few large .dae files that you can only render with BVH acceleration.
 Compare rendering times on a few scenes with moderately complex geometries with and without BVH acceleration. Present your results in a one-paragraph analysis. -->
-
-  <h3>
-    Walk through your BVH construction algorithm. Explain the heuristic you chose for picking the splitting point.
-  </h3>
-  <p>
-    YOUR RESPONSE GOES HERE
-  </p>
-
-  <h3>
-    Show images with normal shading for a few large .dae files that you can only render with BVH acceleration.
-  </h3>
-  <!-- Example of including multiple figures -->
-  <div align="middle">
-    <table style="width:100%">
-      <tr align="center">
-        <td>
-          <img src="images/your_file.png" align="middle" width="400px" />
-          <figcaption>example1.dae</figcaption>
-        </td>
-        <td>
-          <img src="images/your_file.png" align="middle" width="400px" />
-          <figcaption>example2.dae</figcaption>
-        </td>
-      </tr>
-      <tr align="center">
-        <td>
-          <img src="images/your_file.png" align="middle" width="400px" />
-          <figcaption>example3.dae</figcaption>
-        </td>
-        <td>
-          <img src="images/your_file.png" align="middle" width="400px" />
-          <figcaption>example4.dae</figcaption>
-        </td>
-      </tr>
-    </table>
+  <div class="bounding-box">
+    <h3>
+      Walk through your BVH construction algorithm. Explain the heuristic you chose for picking the splitting point.
+    </h3>
+    <p>
+      We implemented a recursive BVH construction algorithm. These were the formal steps and cases.
+    <ol>
+      <li>
+        Base Case: If the number of primitives is less than or equal to <code
+          class="highlighter-rouge">max_leaf_size</code>, then we created a leaf node and assigned its start and end to
+        the passed in start and end iterators. Finally, we returned this leaf node.
+      </li>
+      <li>
+        Recursive Case: Otherwise, we needed to find the best split point to create the left and right BVH nodes. First,
+        we iterated through all three dimensions and created a new function to find the median of the primitives for the
+        current dimension. we temporarily split the primitives into the two nodes based on this median axis. The
+        heuristic we used was the sum of the surface areas of the two bounding boxes and chose the axis that minimized
+        this sum. Afterwards, we split the primitives into the two nodes, updated the iterator to connect them, and
+        found the midpoint before passing in the new start and end iterators into the recursive BVH construction
+        algorithm. If at any time a split led to all of the primitives being in one node, we would just follow the base
+        case logic and assign the start and end to the node. Finally, we returned the node.
+      </li>
+    </ol>
+    </p>
+  </div>
+  <br>
+  <div class="bounding-box">
+    <h3>
+      Show images with normal shading for a few large <code class="highlighter-rouge">.dae</code> files that you can
+      only render with BVH acceleration.
+    </h3>
+    Here are some screenshots of the <code class="highlighter-rouge">.dae</code> files rendered with normal shading
+    using BVH acceleration:
+    <br><br>
+    <!-- Example of including multiple figures -->
+    <div align="middle">
+      <table style="width:100%">
+        <tr align="center">
+          <td>
+            <img src="./Images/Task2/sp24-raytracer-task2-cow.png" align="middle" width="400px" />
+            <figcaption><code class="highlighter-rouge">cow.dae</code></figcaption>
+          </td>
+          <td>
+            <img src="./Images/Task2/sp24-raytracer-task2-beast.png" align="middle" width="400px" />
+            <figcaption><code class="highlighter-rouge">beast.dae</code></figcaption>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            <img src="./Images/Task2/sp24-raytracer-task2-maxplanck.png" align="middle" width="400px" />
+            <figcaption><code class="highlighter-rouge">maxplanck.dae</code></figcaption>
+          </td>
+          <td>
+            <img src="./Images/Task2/sp24-raytracer-task2-beetle.png" align="middle" width="400px" />
+            <figcaption><code class="highlighter-rouge">beetle.dae</code></figcaption>
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
   <br>
 
-  <h3>
-    Compare rendering times on a few scenes with moderately complex geometries with and without BVH acceleration.
-    Present your results in a one-paragraph analysis.
-  </h3>
-  <p>
-    YOUR RESPONSE GOES HERE
-  </p>
+  <div class="bounding-box">
+    <h3>
+      Compare rendering times on a few scenes with moderately complex geometries with and without BVH acceleration.
+      Present your results in a one-paragraph analysis.
+    </h3>
+    <p>
+      As shown in the table below, we found significant speedups in rendering times when using BVH acceleration. We used
+      three <code class="highlighter-rouge">.dae</code> scenes with differing number of primitives. It looks that the
+      rendering time is proportional to the average number of intersection tests per ray. Without BVH acceleration, we
+      had to cast every single ray on every primitive and thus it scales linearly with the number of primitives. With
+      BVH acceleration, we split the primitives into two different nodes so effectively reduced it down logarithmically
+      and thus do not need to check as many primitives so the intersection tests remain relatively constant. The BVH
+      data structure helps us to quickly find the intersection of a ray with the scene and thus significantly reduces
+      the time it takes to render the scene.
+    <table>
+      <thead>
+        <tr>
+          <th><code class="highlighter-rouge">.dae</code> Scene</th>
+          <th>Number of Primitives</th>
+          <th>Render Time (no BVH)</th>
+          <th>Render Time (BVH)</th>
+          <th>Avg Intersection Tests per Ray (no BVH)</th>
+          <th>Avg Intersection Tests per Ray (BVH)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code class="highlighter-rouge">teapot.dae</code></td>
+          <td>2464</td>
+          <td>43.25 s</td>
+          <td>0.0752 ms</td>
+          <td>1006.19</td>
+          <td>2.89</td>
+        </tr>
+        <tr>
+          <td><code class="highlighter-rouge">peter.dae</code></td>
+          <td>40018 </td>
+          <td>697.63 s</td>
+          <td>0.0837 s</td>
+          <td>11753.02</td>
+          <td>2.41</td>
+        </tr>
+        <tr>
+          <td><code class="highlighter-rouge">CBlucy.dae</code></td>
+          <td>133796 </td>
+          <td>2640.11 s</td>
+          <td>0.1127 s</td>
+          <td>30217.62</td>
+          <td>3.03</td>
+        </tr>
+      </tbody>
+    </table>
+    </p>
+  </div>
   <hr>
   <br><br>
 
@@ -278,12 +361,15 @@ Show some images rendered with both implementations of the direct lighting funct
 Focus on one particular scene with at least one area light and compare the noise levels in soft shadows when rendering with 1, 4, 16, and 64 light rays (the -l flag) and with 1 sample per pixel (the -s flag) using light sampling, not uniform hemisphere sampling.
 Compare the results between uniform hemisphere sampling and lighting sampling in a one-paragraph analysis. -->
 
-  <h3>
-    Walk through both implementations of the direct lighting function.
-  </h3>
-  <p>
-    YOUR RESPONSE GOES HERE
-  </p>
+  <div class="bounding-box">
+    <h3>
+      Walk through both implementations of the direct lighting function.
+    </h3>
+    <p>
+      Direct lighting is zero bounce lighting, the light that comes directly from the light source, plus one bounce lighting, the light that comes back to the camera after reflecting off the scene once. We will need to sample the light that comes  
+    </p>
+  </div>
+  <br>
 
   <div class="bounding-box">
     <h3>
@@ -303,11 +389,13 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
         </tr>
         <tr align="center">
           <td>
-            <img src="./Images/Task3/sp24-raytracer-task3-CBspheres_lambertian-hemisphere.png" align="middle" width="400px" />
+            <img src="./Images/Task3/sp24-raytracer-task3-CBspheres_lambertian-hemisphere.png" align="middle"
+              width="400px" />
             <figcaption><code class="highlighter-rouge">CBspheres_lambertian.dae</code></figcaption>
           </td>
           <td>
-            <img src="./Images/Task3/sp24-raytracer-task3-CBspheres_lambertian-importance.png" align="middle" width="400px" />
+            <img src="./Images/Task3/sp24-raytracer-task3-CBspheres_lambertian-importance.png" align="middle"
+              width="400px" />
             <figcaption><code class="highlighter-rouge">CBspheres_lambertian.dae</code></figcaption>
           </td>
         </tr>
@@ -327,39 +415,39 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
   </div>
   <br>
   <div class="bounding-box">
-  <h3>
-    Focus on one particular scene with at least one area light and compare the noise levels in <b>soft shadows</b>
-    when rendering with 1, 4, 16, and 64 light rays (the -l flag) and with 1 sample per pixel (the -s flag) using
-    light sampling, <b>not</b> uniform hemisphere sampling.
-  </h3>
-  <!-- Example of including multiple figures -->
-  <div align="middle">
-    <table style="width:100%">
-      <tr align="center">
-        <td>
-          <img src="./Images/Task3/sp24-raytracer-task3-CBspheres_lambertian-1.png" align="middle" width="400px" />
-          <figcaption>1 Light Ray (example1.dae)</figcaption>
-        </td>
-        <td>
-          <img src="./Images/Task3/sp24-raytracer-task3-CBspheres_lambertian-4.png" align="middle" width="400px" />
-          <figcaption>4 Light Rays (example1.dae)</figcaption>
-        </td>
-      </tr>
-      <tr align="center">
-        <td>
-          <img src="./Images/Task3/sp24-raytracer-task3-CBspheres_lambertian-16.png" align="middle" width="400px" />
-          <figcaption>16 Light Rays (example1.dae)</figcaption>
-        </td>
-        <td>
-          <img src="./Images/Task3/sp24-raytracer-task3-CBspheres_lambertian-64.png" align="middle" width="400px" />
-          <figcaption>64 Light Rays (example1.dae)</figcaption>
-        </td>
-      </tr>
-    </table>
-  </div>
-  <p>
-    YOUR EXPLANATION GOES HERE
-  </p>
+    <h3>
+      Focus on one particular scene with at least one area light and compare the noise levels in <b>soft shadows</b>
+      when rendering with 1, 4, 16, and 64 light rays (the -l flag) and with 1 sample per pixel (the -s flag) using
+      light sampling, <b>not</b> uniform hemisphere sampling.
+    </h3>
+    <!-- Example of including multiple figures -->
+    <div align="middle">
+      <table style="width:100%">
+        <tr align="center">
+          <td>
+            <img src="./Images/Task3/sp24-raytracer-task3-CBspheres_lambertian-1.png" align="middle" width="400px" />
+            <figcaption>1 Light Ray (example1.dae)</figcaption>
+          </td>
+          <td>
+            <img src="./Images/Task3/sp24-raytracer-task3-CBspheres_lambertian-4.png" align="middle" width="400px" />
+            <figcaption>4 Light Rays (example1.dae)</figcaption>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            <img src="./Images/Task3/sp24-raytracer-task3-CBspheres_lambertian-16.png" align="middle" width="400px" />
+            <figcaption>16 Light Rays (example1.dae)</figcaption>
+          </td>
+          <td>
+            <img src="./Images/Task3/sp24-raytracer-task3-CBspheres_lambertian-64.png" align="middle" width="400px" />
+            <figcaption>64 Light Rays (example1.dae)</figcaption>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <p>
+      YOUR EXPLANATION GOES HERE
+    </p>
   </div>
   <br>
 
@@ -386,7 +474,7 @@ You will probably want to use the instructional machines for the above renders i
       Walk through your implementation of the indirect lighting function.
     </h3>
     <p>
-      YOUR RESPONSE GOES HERE
+
     </p>
     <br>
   </div>
@@ -670,7 +758,21 @@ You will probably want to use the instructional machines for the above renders i
       Explain adaptive sampling. Walk through your implementation of the adaptive sampling.
     </h3>
     <p>
-      YOUR RESPONSE GOES HERE
+      Adaptive sampling helps to improve the efficiency and quality of rendering images, especially in situations where
+      certain parts of the image require more computational resources to accurately represent than others. Instead of
+      increasing the sample rate and thus the rendering time, adaptive sampling concentrates the samples in the more
+      difficult parts of the image as there are some pixels that converge quicker than others. The idea is to allocate
+      more samples to regions that require higher fidelity representation, while reducing the number of samples in
+      smoother areas where details are less noticeable. We implemented adaptive sampling by updating \(s_1\) and \(s_2\)
+      as defined in the spec. After a multiple of <code class="highlighter-rouge">samplesPerBatch</code>, we calculated
+      the mean, standard deviation, and \(I\). If \(I \leq \text{maxTolerance} \cdot \mu\), we would stop sampling the
+      pixel and save the total number of samples that we have taken to calculate the color correctly. We used the
+      following equations:
+      $$s_1 = \sum_{i = 1}^{n} x_i$$
+      $$s_2 = \sum_{i = 1}^{n} x_i^2$$
+      $$\mu = \frac{s_1}{n}$$
+      $$\sigma^2 = \frac{1}{n - 1}\cdot \left(s_2 - \frac{s_1^2}{n}\right)$$
+      $$I = 1.96 \cdot \frac{\sigma}{\sqrt{n}}$$
     </p>
   </div>
   <br>
