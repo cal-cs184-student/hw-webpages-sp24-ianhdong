@@ -177,7 +177,7 @@ Show images with normal shading for a few small .dae files. -->
 
   <div class="bounding-box">
     <h3>
-      Explain the triangle intersection algorithm you implemented in your own words.
+      Explain the triangle/sphere intersection algorithm you implemented in your own words.
     </h3>
     <p>
       For the ray-triangle intersection, we implemented the Moller-Trumbore formula. This algorithm takes in a ray with
@@ -191,6 +191,13 @@ Show images with normal shading for a few small .dae files. -->
       triangle so we checked the barycentric coordinates to ensure they were both within [0, 1]. If they were, we
       updated
       the intersection struct.
+    </p>
+    <p>
+      For the ray-sphere intersection, we followed the steps in the class slides. We set the equation of the ray equal
+      to the equation of the sphere and solved for the intersection with the quadratic formula. We checked to see if the
+      discriminant was positive so that we could find the times of intersection. Because it was a quadratic equation,
+      there could be up to two solutions and assigned the smaller one to <code class="highlighter-rouge">t1</code> and
+      the larger one to <code class="highlighter-rouge">t2</code>. If these times of intersection were within the ray's time range, we updated the intersection struct.
     </p>
   </div>
   <br>
@@ -441,6 +448,12 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
       </table>
     </div>
     <br>
+    We noticed that importance sampling converged much faster than uniform hemisphere sampling. The soft shadow noise
+    in
+    hemisphere sampling comes from the fact that only a small portion of the rays cast actually hit the scene. In
+    contrast, importance lighting sampling only considers the rays that actually contribute to the illumination of the
+    scene and thus has much less noise. This leads to much more smoother shadow scene renderings as shown in the above
+    images.
   </div>
   <br>
   <div class="bounding-box">
@@ -495,7 +508,8 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
       in
       hemisphere sampling comes from the fact that only a small portion of the rays cast actually hit the scene. In
       contrast, importance lighting sampling only considers the rays that actually contribute to the illumination of the
-      scene and thus has much less noise. This leads to much more smoother shadow scene renderings as shown in the above images.
+      scene and thus has much less noise. This leads to much more smoother shadow scene renderings as shown in the above
+      images.
     </p>
   </div>
   <hr>
@@ -515,7 +529,24 @@ You will probably want to use the instructional machines for the above renders i
       Walk through your implementation of the indirect lighting function.
     </h3>
     <p>
-
+      We implemented a recursive function to calculate the indirect lighting as each bounce of the light will need to be
+      calculated with the previous bounce. These were the formal steps and cases.
+    <ol>
+      <li>
+        Base Case: If the ray's depth reaches 1, we can just return <code
+          class="highlighter-rouge">one_bounce_radiance</code>.
+      </li>
+      <li>
+        Recursive Case: Otherwise, we will flip a biased coin and continue path tracing with probability
+        \(\text{continuation}\_\text{prob}\). Then, we calculated the <code
+          class="highlighter-rouge">one_bounce_radiance</code> for
+        the current bounce. Afterwards, we sampled with the BSDF to figure out the next direction the ray will go and
+        set the depth to be one less than the current depth. If this ray intersected with the scene, we would recurse to
+        find the next emitted radiance and apply the reflectance formula. If <code
+          class="highlighter-rouge">isAccumBounces</code> is true, we add it to the running total radiance and else we
+        would return just the current level's radiance.
+      </li>
+    </ol>
     </p>
     <br>
   </div>
@@ -573,7 +604,13 @@ You will probably want to use the instructional machines for the above renders i
       </table>
     </div>
     <p>
-      YOUR EXPLANATION GOES HERE
+      As shown above, the left scene only has direct illumination which is zero plus one bounce lighting while the right
+      scene only has indirect illumination. Both of these illuminations present an incomplete picture. Direct
+      illumination only illuminates the portions of the scene that the light rays can directly reach so they miss out on
+      the the ceiling and undersides of the spheres. Indirect lighting is the opposite as it only illuminates the
+      portions of the scene that the light rays cannot directly reach so they miss out on the the light source and the
+      direct light and illuminate the underside of the spheres. Thus, we need both direct and indirect illumination to
+      get a complete picture of the scene.
     </p>
   </div>
   <br>
@@ -596,38 +633,51 @@ You will probably want to use the instructional machines for the above renders i
         <tr align="center">
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-bunny-false-0.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 0 (<code>CBbunny.dae</code>)</figcaption>
+            <figcaption><code class="highlighter-rouge">max_ray_depth=0</code> <code
+                class="highlighter-rouge">CBbunny.dae</code></figcaption>
           </td>
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-bunny-false-1.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 1 (<code>CBbunny.dae</code>)</figcaption>
+            <figcaption><code class="highlighter-rouge">max_ray_depth=1</code> <code
+                class="highlighter-rouge">CBbunny.dae</code></figcaption>
           </td>
         </tr>
         <tr align="center">
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-bunny-false-2.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 2 (<code>CBbunny.dae</code>)</figcaption>
+            <figcaption><code class="highlighter-rouge">max_ray_depth=2</code> <code
+                class="highlighter-rouge">CBbunny.dae</code></figcaption>
           </td>
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-bunny-false-3.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 3 (<code>CBbunny.dae</code>)</figcaption>
+            <figcaption><code class="highlighter-rouge">max_ray_depth=3</code> <code
+                class="highlighter-rouge">CBbunny.dae</code></figcaption>
           </td>
         </tr>
         <tr align="center">
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-bunny-false-4.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 4 (<code>CBbunny.dae</code>)</figcaption>
+            <code class="highlighter-rouge">max_ray_depth=4</code> <code class="highlighter-rouge">CBbunny.dae</code>
+            </figcaption>
           </td>
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-bunny-false-5.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 5 (<code>CBbunny.dae</code>)</figcaption>
+            <figcaption><code class="highlighter-rouge">max_ray_depth=5</code> <code
+                class="highlighter-rouge">CBbunny.dae</code></figcaption>
           </td>
         </tr>
       </table>
     </div>
     <br>
     <p>
-      YOUR EXPLANATION GOES HERE
+      As shown above, the 2nd bounce image features a bunny with illumination on the underside of it because this light
+      bounces off the floor and then onto the bunny. The fur on the head and back is dark because the light does not
+      reach it on the second bounce but rather on the first bounce after it directly hits it. The 3rd bounce image is a
+      lot more darker and the bunny is almost completely covered in shadows. This is because the the 3rd bounce is not
+      hitting the bunny but going off to other parts of the room and is why only certain portions are illuminated. These
+      bounce are able to contribute and help render accurate shadows, recursive reflections, and refractions which
+      rasterization is not able to do. This helps to create a more realistic and accurate image of the scene based on
+      the lighting.
     </p>
   </div>
   <br>
@@ -648,38 +698,49 @@ You will probably want to use the instructional machines for the above renders i
         <tr align="center">
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-bunny-false-0.png" align="middle" width="400px" />
-            <figcaption><code class="highlighter-rouge">max_ray_depth = 0 (CBbunny.dae)</code></figcaption>
+            <figcaption><code class="highlighter-rouge">max_ray_depth=0</code> <code
+                class="highlighter-rouge">CBbunny.dae</code></figcaption>
           </td>
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-bunny-1.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 1 (<code>CBbunny.dae)</code></figcaption>
+            <figcaption><code class="highlighter-rouge">max_ray_depth=1</code> <code
+                class="highlighter-rouge">CBbunny.dae</code></figcaption>
           </td>
         </tr>
         <tr align="center">
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-bunny-2.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 2 (<code>CBbunny.dae</code>)</figcaption>
+            <figcaption><code class="highlighter-rouge">max_ray_depth=2</code> <code
+                class="highlighter-rouge">CBbunny.dae</code></figcaption>
           </td>
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-bunny-3.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 3 (<code>CBbunny.dae</code>)</figcaption>
+            <figcaption><code class="highlighter-rouge">max_ray_depth=3</code> <code
+                class="highlighter-rouge">CBbunny.dae</code></figcaption>
           </td>
         </tr>
         <tr align="center">
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-bunny-4.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 4 (<code>CBbunny.dae</code>)</figcaption>
+            <figcaption><code class="highlighter-rouge">max_ray_depth=4</code> <code
+                class="highlighter-rouge">CBbunny.dae</code></figcaption>
           </td>
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-bunny-5.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 5 (<code>CBbunny.dae</code>)</figcaption>
+            <figcaption><code class="highlighter-rouge">max_ray_depth=5</code> <code
+                class="highlighter-rouge">CBbunny.dae</code></figcaption>
           </td>
         </tr>
       </table>
     </div>
     <br>
     <p>
-      YOUR EXPLANATION GOES HERE
+      As shown in the images above, each bounce helps to convey more information about the scene as it lights up more
+      portions. The first scene, with <code class="highlighter-rouge">max_ray_depth=0</code>, only has zero bounce
+      lighting which is the light source itself. However, in the second scene with <code
+        class="highlighter-rouge">max_ray_depth=1</code>, the light bounces off the floor and onto the bunny and we can
+      observe the top of the bunny illuminated. Later bounces will also highlight the underside of the bunny as the
+      light bounces off the floor and walls and ultimately onto the bunny. This helps to diffuse all lighting.
     </p>
     <br>
   </div>
@@ -699,38 +760,52 @@ You will probably want to use the instructional machines for the above renders i
         <tr align="center">
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-bunny-false-0.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 0 (<code>CBbunny.dae</code>)</figcaption>
+            <figcaption><code class="highlighter-rouge">max_ray_depth=0</code> <code
+                class="highlighter-rouge">CBbunny.dae</code></figcaption>
           </td>
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-bunny-russian-1.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 1 (<code>CBbunny.dae</code>)</figcaption>
+            <figcaption><code class="highlighter-rouge">max_ray_depth=1</code> <code
+                class="highlighter-rouge">CBbunny.dae</code></figcaption>
           </td>
         </tr>
         <tr align="center">
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-bunny-russian-2.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 2 (<code>CBbunny.dae</code>)</figcaption>
+            <figcaption><code class="highlighter-rouge">max_ray_depth=2</code> <code
+                class="highlighter-rouge">CBbunny.dae</code></figcaption>
           </td>
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-bunny-russian-3.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 3 (<code>CBbunny.dae</code>)</figcaption>
+            <figcaption><code class="highlighter-rouge">max_ray_depth=3</code> <code
+                class="highlighter-rouge">CBbunny.dae</code></figcaption>
           </td>
         </tr>
         <tr align="center">
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-bunny-russian-4.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 4 (<code>CBbunny.dae</code>)</figcaption>
+            <figcaption><code class="highlighter-rouge">max_ray_depth=4</code> <code
+                class="highlighter-rouge">CBbunny.dae</code></figcaption>
           </td>
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-bunny-russian-100.png" align="middle" width="400px" />
-            <figcaption>max_ray_depth = 100 (<code>CBbunny.dae</code>)</figcaption>
+            <figcaption><code class="highlighter-rouge">max_ray_depth=100</code> <code
+                class="highlighter-rouge">CBbunny.dae</code></figcaption>
           </td>
         </tr>
       </table>
     </div>
     <br>
     <p>
-      YOUR EXPLANATION GOES HERE
+      As shown in the images above, each bounce helps to convey more information about the scene as it lights up more
+      portions. The first scene, with <code class="highlighter-rouge">max_ray_depth=0</code>, only has zero bounce
+      lighting which is the light source itself. However, in the second scene with <code
+        class="highlighter-rouge">max_ray_depth=1</code>, the light bounces off the floor and onto the bunny and we can
+      observe the top of the bunny illuminated. Later bounces will also highlight the underside of the bunny as the
+      light bounces off the floor and walls and ultimately onto the bunny. This helps to diffuse all lighting. However,
+      at the 100 depth layer, there are not that many very large bounce rays because the continuation probability
+      compounds and thus the rays are more likely to terminate early. Thus, it does not convey as much information as
+      expected and looks very similar to the 4th bounce image.
     </p>
     <br>
   </div>
@@ -748,44 +823,45 @@ You will probably want to use the instructional machines for the above renders i
         <tr align="center">
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-building-1.png" align="middle" width="400px" />
-            <figcaption>1 sample per pixel (example1.dae)</figcaption>
+            <figcaption>1 sample per pixel <code class="highlighter-rouge">(building.dae)</code></figcaption>
           </td>
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-building-2.png" align="middle" width="400px" />
-            <figcaption>2 samples per pixel (building.dae)</figcaption>
+            <figcaption>2 samples per pixel <code class="highlighter-rouge">(building.dae)</code></figcaption>
           </td>
         </tr>
         <tr align="center">
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-building-4.png" align="middle" width="400px" />
-            <figcaption>4 samples per pixel (building.dae)</figcaption>
+            <figcaption>4 samples per pixel <code class="highlighter-rouge">(building.dae)</code></figcaption>
           </td>
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-building-8.png" align="middle" width="400px" />
-            <figcaption>8 samples per pixel (building.dae)</figcaption>
+            <figcaption>8 samples per pixel <code class="highlighter-rouge">(building.dae)</code></figcaption>
           </td>
         </tr>
         <tr align="center">
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-building-16.png" align="middle" width="400px" />
-            <figcaption>16 samples per pixel (building.dae)</figcaption>
+            <figcaption>16 samples per pixel <code class="highlighter-rouge">(building.dae)</code></figcaption>
           </td>
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-building-64.png" align="middle" width="400px" />
-            <figcaption>64 samples per pixel (building.dae)</figcaption>
+            <figcaption>64 samples per pixel <code class="highlighter-rouge">(building.dae)</code></figcaption>
           </td>
         </tr>
         <tr align="center">
           <td>
             <img src="./Images/Task4/sp24-raytracer-task4-building-1024.png" align="middle" width="400px" />
-            <figcaption>1024 samples per pixel (building.dae)</figcaption>
+            <figcaption>1024 samples per pixel <code class="highlighter-rouge">(building.dae)</code></figcaption>
           </td>
         </tr>
       </table>
     </div>
     <br>
     <p>
-      YOUR EXPLANATION GOES HERE
+      As shown in the images above, taking more samples helps reduce the noise in the image and shadows because they
+      become much more representative of the true scene.
     </p>
   </div>
   <hr>
