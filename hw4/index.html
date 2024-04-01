@@ -14,7 +14,7 @@
 			font-family: 'Open Sans', sans-serif;
 			color: #121212;
 			background-color: #f6ead7;
-			cursor: url(https://cal-cs184-student.github.io/hw-webpages-sp24-ianhdong/assets/cloth-sim.png);
+			cursor: url(https://cal-cs184-student.github.io/hw-webpages-sp24-ianhdong/cloth-sim.png), auto;
 		}
 
 		.bounding-box {
@@ -101,7 +101,6 @@
 	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
 	</script>
 
-</head>
 
 
 <body>
@@ -206,9 +205,11 @@
 	<h2 align="middle">Section II: Simulation via Numerical Integration</h2>
 	<div class="bounding-box">
 		<h3>
-			Show us a screenshot of your shaded cloth from scene/pinned4.json in its final resting state! If you choose to use different parameters than the default ones, please list them.
+			Show us a screenshot of your shaded cloth from scene/pinned4.json in its final resting state! If you choose
+			to use different parameters than the default ones, please list them.
 		</h3>
-		Here are the screenshots of the shaded cloth from <code class="highlighter-rouge">scene/pinned4.json</code> in its final resting state for both the wireframe and shaded versions:
+		Here are the screenshots of the shaded cloth from <code class="highlighter-rouge">scene/pinned4.json</code> in
+		its final resting state for both the wireframe and shaded versions:
 		<div align="middle">
 			<table style="width:100%">
 				<tr align="center">
@@ -226,6 +227,47 @@
 			</table>
 		</div>
 	</div>
+	<hr>
+	<br>
+	<h2 align="middle">Section III: Handling Collisions with Other Objects</h2>
+	<div class="bounding-box">
+		<h3>
+			<!-- <b> -->
+			Explain how you handled collisions with the sphere and the plane.
+			<!-- </b> -->
+		</h3>
+		<p>
+			In this portion of the homework, I implemented a way to detect cloth collision with outside objects as well.
+			To handle collisions with a sphere, I modified <code class="highlighter-rouge">Sphere::collide</code> and
+			calculated the distance between the sphere's center and the given point mass to see whether it had already
+			intersected within the sphere. If it had, I calculated the penetration depth and move the point mass out of
+			the sphere along the trajectory had it not collided. This
+		</p>
+	</div>
+	<br>
+	<div class="bounding-box">
+		<h3>
+			Show us a screenshot of your shaded cloth lying peacefully at rest on the plane. If you haven't by now, feel
+			free to express your colorful creativity with the cloth! (You will need to complete the shaders portion
+			first to show custom colors.)
+		</h3>
+		<p>
+			Here is a screenshot of the shaded cloth lying peacefully at rest on the plane:
+
+		<div align="middle">
+			<table style="width:100%">
+				<tr align="center">
+					<td>
+						<img src="./Images/Task3/sp24-clothsim-plane-collision-at-rest.png" align="middle" />
+						<figcaption> At rest on the plane
+						</figcaption>
+					</td>
+				</tr>
+			</table>
+		</div>
+		</p>
+	</div>
 </body>
+</head>
 
 </html>
