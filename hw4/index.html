@@ -14,7 +14,7 @@
 			font-family: 'Open Sans', sans-serif;
 			color: #121212;
 			background-color: #f6ead7;
-			cursor: url(https://cal-cs184-student.github.io/hw-webpages-sp24-ianhdong/cloth-sim.png), auto;
+			cursor: url(https://rsha256.github.io/cloth-clear-32.png), auto;
 		}
 
 		.bounding-box {
@@ -100,8 +100,7 @@
 	</script>
 	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
 	</script>
-
-
+</head>
 
 <body>
 
@@ -240,9 +239,56 @@
 			In this portion of the homework, I implemented a way to detect cloth collision with outside objects as well.
 			To handle collisions with a sphere, I modified <code class="highlighter-rouge">Sphere::collide</code> and
 			calculated the distance between the sphere's center and the given point mass to see whether it had already
-			intersected within the sphere. If it had, I calculated the penetration depth and move the point mass out of
-			the sphere along the trajectory had it not collided. This
+			intersected within the sphere. If it had, I calculated the penetration depth and moved the point mass out of
+			the sphere along the trajectory had it not collided, lying on the sphere's surface tangent. To handle
+			collisions with a plane, I modified <code class="highlighter-rouge">Plane::collide</code> and calculated to
+			see whether the two positions at the time steps were at opposite side of the plane If it was, I calculated
+			the penetration depth and moved the point mass out of the plane along the trajectory had it not collided,
+			lying on the plane's surface tangent. Finally, for both, we applied the friction and scaled down the
+			correction vector.
 		</p>
+	</div>
+	<br>
+	<div class="bounding-box">
+		<h3>
+			Show us screenshots of your shaded cloth from scene/sphere.json in its final resting state on the sphere
+			using the default <code class="highlighter-rouge">ks</code> = 5000 as well as with 500 and 50000. Describe
+			the differences in the results.
+		</h3>
+		Here are the screenshots of the shaded cloth from <code class="highlighter-rouge">scene/sphere.json</code> with
+		different <code class="highlighter-rouge">ks</code> values in its final resting state on the sphere:
+
+		<div align="middle">
+			<table style="width:100%">
+				<tr align="center">
+					<td>
+						<img src="./Images/Task3/sp24-clothsim-sphere-ks-500.png" align="middle" />
+						<figcaption><code class="highlighter-rouge">sphere.json</code> with <code
+								class="highlighter-rouge">ks</code> = 500
+						</figcaption>
+					</td>
+					<td>
+						<img src="./Images/Task3/sp24-clothsim-sphere-ks-5000.png" align="middle" />
+						<figcaption><code class="highlighter-rouge">sphere.json</code> with <code
+								class="highlighter-rouge">ks</code> = 5000
+						</figcaption>
+					</td>
+					<td>
+						<img src="./Images/Task3/sp24-clothsim-sphere-ks-50000.png" align="middle" />
+						<figcaption><code class="highlighter-rouge">sphere.json</code> with <code
+								class="highlighter-rouge">ks</code> = 50000
+						</figcaption>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<br>
+		<code class="highlighter-rouge">ks</code> represents the stiffness of the spring. As the value of <code
+			class="highlighter-rouge">ks</code> increases, the cloth becomes more rigid and less likely to fully rest on
+		top of the sphere. As shown above, the leftmost image depicts the cloth almost fully resting on top of the
+		sphere and because the springs' corrective forces are weak more points on the sphere fall due to gravity.
+		However, the rightmost image depicts a more dramatic scene where the cloth is much more rigid and less likely to
+		fully rest on top of the sphere as the strong spring forces work to oppose gravity.
 	</div>
 	<br>
 	<div class="bounding-box">
@@ -259,7 +305,7 @@
 				<tr align="center">
 					<td>
 						<img src="./Images/Task3/sp24-clothsim-plane-collision-at-rest.png" align="middle" />
-						<figcaption> At rest on the plane
+						<figcaption> Cloth at rest on the plane
 						</figcaption>
 					</td>
 				</tr>
@@ -267,7 +313,188 @@
 		</div>
 		</p>
 	</div>
+	<hr>
+	<br>
+	<h2 align="middle">Section IV: Handling Self-Collisions</h2>
+	<div class="bounding-box">
+		<h3>
+			Show us at least 3 screenshots that document how your cloth falls and folds on itself, starting with an
+			early, initial self-collision and ending with the cloth at a more restful state (even if it is still
+			slightly bouncy on the ground).
+		</h3>
+		<p>
+			Here are the screenshots that document how the cloth falls and collides with itself.
+		</p>
+		<div align="middle">
+			<table style="width:100%">
+				<tr align="center">
+					<td>
+						<img src="./Images/Task4/sp24-clothsim-self-collision-1.png" align="middle" />
+						<figcaption>Cloth dropping</figcaption>
+					</td>
+					<td>
+						<img src="./Images/Task4/sp24-clothsim-self-collision-2.png" align="middle" />
+						<figcaption>Initial self-collisions</figcaption>
+					</td>
+				</tr>
+				<tr align="center">
+					<td>
+						<img src="./Images/Task4/sp24-clothsim-self-collision-3.png" align="middle" />
+						<figcaption>More self-collisions</figcaption>
+					</td>
+					<td>
+						<img src="./Images/Task4/sp24-clothsim-self-collision-4.png" align="middle" />
+						<figcaption>Additional self-collisions</figcaption>
+					</td>
+				</tr>
+				<tr align="center">
+					<td>
+						<img src="./Images/Task4/sp24-clothsim-self-collision-5.png" align="middle" />
+						<figcaption>Falling onto ground</figcaption>
+					</td>
+					<td>
+						<img src="./Images/Task4/sp24-clothsim-self-collision-6.png" align="middle" />
+						<figcaption>Restful state</figcaption>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<br>
+	<div class="bounding-box">
+		<h3>
+			Vary the <code class="highlighter-rouge">density</code> as well as <code class="highlighter-rouge">ks</code>
+			and describe with words and screenshots how they affect the behavior of the cloth as it falls on itself.
+		</h3>
+		<p>
+			Here are the screenshots that document how the cloth falls and collides with itself with two different <code
+				class="highlighter-rouge">densities</code>.
+		</p>
+
+		<div align="middle">
+			<table style="width:100%">
+				<tr align="center">
+					<td>
+						<img src="./Images/Task4/sp24-clothsim-self-collision-density-1-1.png" align="middle" />
+						<figcaption>Self-collision 1 for cloth with <code class="highlighter-rouge">density</code> = 1
+						</figcaption>
+					</td>
+					<td>
+						<img src="./Images/Task4/sp24-clothsim-self-collision-density-1-2.png" align="middle" />
+						<figcaption>Self-collision 2 for cloth with <code class="highlighter-rouge">density</code> = 1
+						</figcaption>
+					</td>
+				</tr>
+				<tr align="center">
+					<td>
+						<img src="./Images/Task4/sp24-clothsim-self-collision-density-1-3.png" align="middle" />
+						<figcaption>Self-collision 3 for cloth with <code class="highlighter-rouge">density</code> = 1
+						</figcaption>
+					</td>
+					<td>
+						<img src="./Images/Task4/sp24-clothsim-self-collision-density-1-4.png" align="middle" />
+						<figcaption>Self-collision 4 for cloth with <code class="highlighter-rouge">density</code> = 1
+						</figcaption>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<br>
+		<div align="middle">
+			<table style="width:100%">
+				<tr align="center">
+					<td>
+						<img src="./Images/Task4/sp24-clothsim-self-collision-density-100-1.png" align="middle" />
+						<figcaption>Self-collision 1 for cloth with <code class="highlighter-rouge">density</code> = 100
+						</figcaption>
+					</td>
+					<td>
+						<img src="./Images/Task4/sp24-clothsim-self-collision-density-100-2.png" align="middle" />
+						<figcaption>Self-collision 2 for cloth with <code class="highlighter-rouge">density</code> = 100
+						</figcaption>
+					</td>
+				</tr>
+				<tr align="center">
+					<td>
+						<img src="./Images/Task4/sp24-clothsim-self-collision-density-100-3.png" align="middle" />
+						<figcaption>Self-collision 3 for cloth with <code class="highlighter-rouge">density</code> = 100
+						</figcaption>
+					</td>
+					<td>
+						<img src="./Images/Task4/sp24-clothsim-self-collision-density-100-4.png" align="middle" />
+						<figcaption>Self-collision 4 for cloth with <code class="highlighter-rouge">density</code> = 100
+						</figcaption>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<br>
+		When the density was low, there were a lot fewer and larger wrinkles that had formed over the cloth. As I
+		increased the density, the cloth folded into itself more often and the wrinkles became much smaller in size and
+		the cloth was going to collide with itself more often since it was denser.
+		<br>
+		<p>
+			Here are the screenshots that document how the cloth falls and collides with itself with two different <code
+				class="highlighter-rouge">ks</code> values.
+		</p>
+		<div align="middle">
+			<table style="width:100%">
+				<tr align="center">
+					<td>
+						<img src="./Images/Task4/sp24-clothsim-self-collision-ks-1000-1.png" align="middle" />
+						<figcaption>Self-collision 1 for cloth with <code class="highlighter-rouge">ks</code> = 1000
+						</figcaption>
+					</td>
+					<td>
+						<img src="./Images/Task4/sp24-clothsim-self-collision-ks-1000-2.png" align="middle" />
+						<figcaption>Self-collision 2 for cloth with <code class="highlighter-rouge">ks</code> = 1000
+						</figcaption>
+					</td>
+				</tr>
+				<tr align="center">
+					<td>
+						<img src="./Images/Task4/sp24-clothsim-self-collision-ks-1000-3.png" align="middle" />
+						<figcaption>Self-collision 3 for cloth with <code class="highlighter-rouge">ks</code> = 1000
+						</figcaption>
+					</td>
+					<td>
+						<img src="./Images/Task4/sp24-clothsim-self-collision-ks-1000-4.png" align="middle" />
+						<figcaption>Self-collision 4 for cloth with <code class="highlighter-rouge">ks</code> = 1000
+						</figcaption>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<br>
+		<div align="middle">
+			<table style="width:100%">
+				<tr align="center">
+					<td>
+						<img src="./Images/Task4/sp24-clothsim-self-collision-ks-100000-1.png" align="middle" />
+						<figcaption>Self-collision 1 for cloth with <code class="highlighter-rouge">ks</code> = 100000
+						</figcaption>
+					</td>
+					<td>
+						<img src="./Images/Task4/sp24-clothsim-self-collision-ks-100000-2.png" align="middle" />
+						<figcaption>Self-collision 2 for cloth with <code class="highlighter-rouge">ks</code> = 100000
+						</figcaption>
+					</td>
+				</tr>
+				<tr align="center">
+					<td>
+						<img src="./Images/Task4/sp24-clothsim-self-collision-ks-100000-3.png" align="middle" />
+						<figcaption>Self-collision 3 for cloth with <code class="highlighter-rouge">ks</code> = 100000
+						</figcaption>
+					</td>
+					<td>
+						<img src="./Images/Task4/sp24-clothsim-self-collision-ks-100000-4.png" align="middle" />
+						<figcaption>Self-collision 4 for cloth with <code class="highlighter-rouge">ks</code> = 100000
+						</figcaption>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
 </body>
-</head>
 
 </html>
