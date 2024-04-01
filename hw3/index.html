@@ -108,7 +108,7 @@
   <h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2024</h1>
   <h1 align="middle"><a href="https://cal-cs184-student.github.io/hw-webpages-sp24-ianhdong/hw3/index.html">Homework
       3: PathTracer</a></h1>
-  <h2 align="middle">Ian Dong and Colin Steidtmann</h2>
+  <h2 align="middle">Ian Dong</h2>
 
   <br><br>
 
@@ -117,13 +117,13 @@
   <div class="bounding-box">
 
     <h2 align="middle">Overview</h2>
-    In this homework, we implemented a path tracing renderer. First, we worked on generating camera rays from image
+    In this homework, I implemented a path tracing renderer. First, I worked on generating camera rays from image
     space
-    to sensor in camera space and their intersection with triangles and spheres. Then, we built a bounding volume
-    hierarchy to accelerate ray intersection tests and speed up the path tracers rendering. Afterwards, we explored
-    direct illumination to simulate light sources and render images with realistic shadowing. Then, we implemented
+    to sensor in camera space and their intersection with triangles and spheres. Then, I built a bounding volume
+    hierarchy to accelerate ray intersection tests and speed up the path tracers rendering. Afterwards, I explored
+    direct illumination to simulate light sources and render images with realistic shadowing. Then, I implemented
     global
-    illumination to simulate indirect lighting and reflections using diffuse BSDF. Finally, we implemented adaptive
+    illumination to simulate indirect lighting and reflections using diffuse BSDF. Finally, I implemented adaptive
     sampling to reduce noise
     in the rendered images.
     <br><br>
@@ -140,7 +140,7 @@
 
   <br><br>
 
-  <h2 align="middle">Section I: Ray Generation and Scene Intersection (20 Points)</h2>
+  <h2 align="middle">Section I: Ray Generation and Scene Intersection</h2>
   <!-- Walk through the ray generation and primitive intersection parts of the rendering pipeline.
 Explain the triangle intersection algorithm you implemented in your own words.
 Show images with normal shading for a few small .dae files. -->
@@ -152,22 +152,22 @@ Show images with normal shading for a few small .dae files. -->
       <!-- </b> -->
     </h3>
     <p>
-      For the ray generation portion of the rendering pipeline, we first made sure to find the boundaries of the
+      For the ray generation portion of the rendering pipeline, I first made sure to find the boundaries of the
       camera space by calculating \(\text{tan}(\frac{\text{hFov}}{2})\) and \(\text{tan}(\frac{\text{vFov}}{2})\) since
       the bottom left corner is defined as (\(-\text{tan}(\frac{\text{hFov}}{2})\), \(\text{tan}(\frac{\text{vFov}}{2})
       -1\)) and the top right corner is defined as (\(\text{tan}(\frac{\text{hFov}}{2})\),
-      \(\text{tan}(\frac{\text{vFov}}{2}), -1\)). Then, we used the instance variables <code
+      \(\text{tan}(\frac{\text{vFov}}{2}), -1\)). Then, I used the instance variables <code
         class="highlighter-rouge">hFov</code> and <code class="highlighter-rouge">vFov</code> which are in degrees to
       calculate the height and width length before using linear interpolation to find the camera image coordinates.
-      Afterwards, we used <code class="highlighter-rouge">this->c2w</code> to convert my camera image coordinates into
-      world space coordinates and also normalized the direction vector. Finally, we constructed the ray with this vector
+      Afterwards, I used <code class="highlighter-rouge">this->c2w</code> to convert my camera image coordinates into
+      world space coordinates and also normalized the direction vector. Finally, I constructed the ray with this vector
       and defined the <code class="highlighter-rouge">min_t</code> and <code class="highlighter-rouge">max_t</code>.
     </p>
     <p>
-      For the primitive intersection portion of the rendering pipeline, we generated <code
+      For the primitive intersection portion of the rendering pipeline, I generated <code
         class="highlighter-rouge">num_samples</code> using <code
-        class="highlighter-rouge">this->gridSampler->get_sample()</code>. We made sure to normalize the coordinates
-      before calling on the previously implemented method to generate the ray. Finally, we called <code
+        class="highlighter-rouge">this->gridSampler->get_sample()</code>. I made sure to normalize the coordinates
+      before calling on the previously implemented method to generate the ray. Finally, I called <code
         class="highlighter-rouge">this->est_radiance_global_illumination()</code> to get the sample radiance and
       averaged
       the radiance to update the pixel in the buffer.
@@ -180,24 +180,24 @@ Show images with normal shading for a few small .dae files. -->
       Explain the triangle/sphere intersection algorithm you implemented in your own words.
     </h3>
     <p>
-      For the ray-triangle intersection, we implemented the Moller-Trumbore formula. This algorithm takes in a ray with
+      For the ray-triangle intersection, I implemented the Moller-Trumbore formula. This algorithm takes in a ray with
       origin, \(o\), and direction, \(d\), as well as a triangle with vertices, \(p_0\), \(p_1\), and \(p_2\) and solves
       the following equation:
       $$\vec{O} + t\vec{D} = (1 - b_1 - b_2) \vec{p}_0 + b_1 \vec{p}_1.$$
-      We followed the algorithm by defining each of the variables and solving for \(t\), \(b_1\), and \(b_2\). If \(t\)
+      I followed the algorithm by defining each of the variables and solving for \(t\), \(b_1\), and \(b_2\). If \(t\)
       was not within the range of the minimum and maximum time range,
       the ray would be parallel to the triangle and thus would not intersect with the triangle given this time range.
-      Otherwise, the ray would intersect within the triangle's plane. However, we needed to make sure it was within the
-      triangle so we checked the barycentric coordinates to ensure they were both within [0, 1]. If they were, we
+      Otherwise, the ray would intersect within the triangle's plane. However, I needed to make sure it was within the
+      triangle so I checked the barycentric coordinates to ensure they were both within [0, 1]. If they were, we
       updated
       the intersection struct.
     </p>
     <p>
-      For the ray-sphere intersection, we followed the steps in the class slides. We set the equation of the ray equal
-      to the equation of the sphere and solved for the intersection with the quadratic formula. We checked to see if the
-      discriminant was positive so that we could find the times of intersection. Because it was a quadratic equation,
+      For the ray-sphere intersection, I followed the steps in the class slides. I set the equation of the ray equal
+      to the equation of the sphere and solved for the intersection with the quadratic formula. I checked to see if the
+      discriminant was positive so that I could find the times of intersection. Because it was a quadratic equation,
       there could be up to two solutions and assigned the smaller one to <code class="highlighter-rouge">t1</code> and
-      the larger one to <code class="highlighter-rouge">t2</code>. If these times of intersection were within the ray's time range, we updated the intersection struct.
+      the larger one to <code class="highlighter-rouge">t2</code>. If these times of intersection were within the ray's time range, I updated the intersection struct.
     </p>
   </div>
   <br>
@@ -248,22 +248,22 @@ Compare rendering times on a few scenes with moderately complex geometries with 
       Walk through your BVH construction algorithm. Explain the heuristic you chose for picking the splitting point.
     </h3>
     <p>
-      We implemented a recursive BVH construction algorithm. These were the formal steps and cases.
+      I implemented a recursive BVH construction algorithm. These were the formal steps and cases.
     <ol>
       <li>
         Base Case: If the number of primitives is less than or equal to <code
-          class="highlighter-rouge">max_leaf_size</code>, then we created a leaf node and assigned its start and end to
-        the passed in start and end iterators. Finally, we returned this leaf node.
+          class="highlighter-rouge">max_leaf_size</code>, then I created a leaf node and assigned its start and end to
+        the passed in start and end iterators. Finally, I returned this leaf node.
       </li>
       <li>
-        Recursive Case: Otherwise, we needed to find the best split point to create the left and right BVH nodes. First,
-        we iterated through all three dimensions and created a new function to find the median of the primitives for the
-        current dimension. we temporarily split the primitives into the two nodes based on this median axis. The
-        heuristic we used was the sum of the surface areas of the two bounding boxes and chose the axis that minimized
-        this sum. Afterwards, we split the primitives into the two nodes, updated the iterator to connect them, and
+        Recursive Case: Otherwise, I needed to find the best split point to create the left and right BVH nodes. First,
+        I iterated through all three dimensions and created a new function to find the median of the primitives for the
+        current dimension. I temporarily split the primitives into the two nodes based on this median axis. The
+        heuristic I used was the sum of the surface areas of the two bounding boxes and chose the axis that minimized
+        this sum. Afterwards, I split the primitives into the two nodes, updated the iterator to connect them, and
         found the midpoint before passing in the new start and end iterators into the recursive BVH construction
-        algorithm. If at any time a split led to all of the primitives being in one node, we would just follow the base
-        case logic and assign the start and end to the node. Finally, we returned the node.
+        algorithm. If at any time a split led to all of the primitives being in one node, I would just follow the base
+        case logic and assign the start and end to the node. Finally, I returned the node.
       </li>
     </ol>
     </p>
@@ -311,11 +311,11 @@ Compare rendering times on a few scenes with moderately complex geometries with 
       Present your results in a one-paragraph analysis.
     </h3>
     <p>
-      As shown in the table below, we found significant speedups in rendering times when using BVH acceleration. We used
+      As shown in the table below, I found significant speedups in rendering times when using BVH acceleration. I used
       three <code class="highlighter-rouge">.dae</code> scenes with differing number of primitives. It looks that the
       rendering time is proportional to the average number of intersection tests per ray. Without BVH acceleration, we
       had to cast every single ray on every primitive and thus it scales linearly with the number of primitives. With
-      BVH acceleration, we split the primitives into two different nodes so effectively reduced it down logarithmically
+      BVH acceleration, I split the primitives into two different nodes so effectively reduced it down logarithmically
       and thus do not need to check as many primitives so the intersection tests remain relatively constant. The BVH
       data structure helps us to quickly find the intersection of a ray with the scene and thus significantly reduces
       the time it takes to render the scene.
@@ -374,33 +374,33 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
     </h3>
     <p>
       Direct lighting is zero bounce lighting, the light that comes directly from the light source, plus one bounce
-      lighting, the light that comes back to the camera after reflecting off the scene once. For zero bounce, we only
-      need to return the light from the light source without any bounces. However, for one bounce, we need to determine
-      how much light is reflected back to the camera after the ray intersects with the scene. Because we cannot compute
-      an infinite integral, we instead used a Monte-Carlo Estimator of the reflectance.
+      lighting, the light that comes back to the camera after reflecting off the scene once. For zero bounce, I only
+      need to return the light from the light source without any bounces. However, for one bounce, I need to determine
+      how much light is reflected back to the camera after the ray intersects with the scene. Because I cannot compute
+      an infinite integral, I instead used a Monte-Carlo Estimator of the reflectance.
     </p>
     <p>
-      For uniform hemisphere sampling, we iterated through the number of samples and sampled a vector uniformly from the
-      hemisphere and converted it into the world space. Afterwards, we created the ray with this vector as the
-      direction. If the ray intersected the scene, we would calculate the BSDF $f(\text{w_out}, \text{w_in})$, the
+      For uniform hemisphere sampling, I iterated through the number of samples and sampled a vector uniformly from the
+      hemisphere and converted it into the world space. Afterwards, I created the ray with this vector as the
+      direction. If the ray intersected the scene, I would calculate the BSDF $f(\text{w_out}, \text{w_in})$, the
       emitted radiance $L_i$, and the
       angle
       between the
-      surface normal and the sampled vector. Finally, we computed the sample mean of the reflectance calculations from
+      surface normal and the sampled vector. Finally, I computed the sample mean of the reflectance calculations from
       lecture using the following formula and previous calculations:
       $$\frac{1}{N} \sum_{i = 1}^{n} \frac{f_r(\text{p}, \omega_i \rightarrow \omega_r) L_i(\text{p},
       \omega_j) \text{cos}\theta_j}{p(\omega_j)}$$
     </p>
     <p>
-      For importance lighting sampling, instead of sampling from a uniform hemisphere we iterated through each of the
+      For importance lighting sampling, instead of sampling from a uniform hemisphere I iterated through each of the
       light sources and calculated the number of
-      samples needed based on if it was a delta light and sampled uniformly from each light source. Then, we iterated
+      samples needed based on if it was a delta light and sampled uniformly from each light source. Then, I iterated
       through the number of samples and
       calculated
       the emitted radiance along with the sampled world space vector for our ray. If the ray intersected the scene, we
       would calculate the BSDF and the angle between the surface normal and the sampled vector and rejected rays that
-      were on the opposite side of the surface. For each light, we computed the mean reflectance using the formula from
-      above. Finally, we added this mean reflectance to the total reflectance and returned the total reflectance.
+      were on the opposite side of the surface. For each light, I computed the mean reflectance using the formula from
+      above. Finally, I added this mean reflectance to the total reflectance and returned the total reflectance.
     </p>
   </div>
   <br>
@@ -448,7 +448,7 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
       </table>
     </div>
     <br>
-    We noticed that importance sampling converged much faster than uniform hemisphere sampling. The soft shadow noise
+    I noticed that importance sampling converged much faster than uniform hemisphere sampling. The soft shadow noise
     in
     hemisphere sampling comes from the fact that only a small portion of the rays cast actually hit the scene. In
     contrast, importance lighting sampling only considers the rays that actually contribute to the illumination of the
@@ -489,11 +489,11 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
     </div>
     <p>
       Shown in the images above, when there are low amount of light rays there are more noise in the soft shadows with
-      individual dots making it up. As we increase the number of light rays, however, we noticed that the noise
+      individual dots making it up. As I increase the number of light rays, however, I noticed that the noise
       decreased dramatically. At 64 light rays, the noise was almost completely gone and the soft shadows were much
-      smoother. This is because with more light rays, we are able to sample more points on the light source and thus get
+      smoother. This is because with more light rays, I are able to sample more points on the light source and thus get
       a better estimate of the light intensity at a point on the surface. This is especially important for area lights,
-      where the light intensity can vary across the light source. Thus, the more light rays we have, the more accurate
+      where the light intensity can vary across the light source. Thus, the more light rays I have, the more accurate
       our estimate of the light intensity at a point on the surface and the smoother the soft shadows will be.
     </p>
   </div>
@@ -504,7 +504,7 @@ Compare the results between uniform hemisphere sampling and lighting sampling in
       Compare the results between uniform hemisphere sampling and lighting sampling in a one-paragraph analysis.
     </h3>
     <p>
-      We noticed that importance sampling converged much faster than uniform hemisphere sampling. The soft shadow noise
+      I noticed that importance sampling converged much faster than uniform hemisphere sampling. The soft shadow noise
       in
       hemisphere sampling comes from the fact that only a small portion of the rays cast actually hit the scene. In
       contrast, importance lighting sampling only considers the rays that actually contribute to the illumination of the
@@ -529,21 +529,21 @@ You will probably want to use the instructional machines for the above renders i
       Walk through your implementation of the indirect lighting function.
     </h3>
     <p>
-      We implemented a recursive function to calculate the indirect lighting as each bounce of the light will need to be
+      I implemented a recursive function to calculate the indirect lighting as each bounce of the light will need to be
       calculated with the previous bounce. These were the formal steps and cases.
     <ol>
       <li>
-        Base Case: If the ray's depth reaches 1, we can just return <code
+        Base Case: If the ray's depth reaches 1, I can just return <code
           class="highlighter-rouge">one_bounce_radiance</code>.
       </li>
       <li>
-        Recursive Case: Otherwise, we will flip a biased coin and continue path tracing with probability
-        \(\text{continuation}\_\text{prob}\). Then, we calculated the <code
+        Recursive Case: Otherwise, I will flip a biased coin and continue path tracing with probability
+        \(\text{continuation}\_\text{prob}\). Then, I calculated the <code
           class="highlighter-rouge">one_bounce_radiance</code> for
-        the current bounce. Afterwards, we sampled with the BSDF to figure out the next direction the ray will go and
-        set the depth to be one less than the current depth. If this ray intersected with the scene, we would recurse to
+        the current bounce. Afterwards, I sampled with the BSDF to figure out the next direction the ray will go and
+        set the depth to be one less than the current depth. If this ray intersected with the scene, I would recurse to
         find the next emitted radiance and apply the reflectance formula. If <code
-          class="highlighter-rouge">isAccumBounces</code> is true, we add it to the running total radiance and else we
+          class="highlighter-rouge">isAccumBounces</code> is true, I add it to the running total radiance and else we
         would return just the current level's radiance.
       </li>
     </ol>
@@ -609,7 +609,7 @@ You will probably want to use the instructional machines for the above renders i
       illumination only illuminates the portions of the scene that the light rays can directly reach so they miss out on
       the the ceiling and undersides of the spheres. Indirect lighting is the opposite as it only illuminates the
       portions of the scene that the light rays cannot directly reach so they miss out on the the light source and the
-      direct light and illuminate the underside of the spheres. Thus, we need both direct and indirect illumination to
+      direct light and illuminate the underside of the spheres. Thus, I need both direct and indirect illumination to
       get a complete picture of the scene.
     </p>
   </div>
@@ -738,7 +738,7 @@ You will probably want to use the instructional machines for the above renders i
       As shown in the images above, each bounce helps to convey more information about the scene as it lights up more
       portions. The first scene, with <code class="highlighter-rouge">max_ray_depth=0</code>, only has zero bounce
       lighting which is the light source itself. However, in the second scene with <code
-        class="highlighter-rouge">max_ray_depth=1</code>, the light bounces off the floor and onto the bunny and we can
+        class="highlighter-rouge">max_ray_depth=1</code>, the light bounces off the floor and onto the bunny and I can
       observe the top of the bunny illuminated. Later bounces will also highlight the underside of the bunny as the
       light bounces off the floor and walls and ultimately onto the bunny. This helps to diffuse all lighting.
     </p>
@@ -800,7 +800,7 @@ You will probably want to use the instructional machines for the above renders i
       As shown in the images above, each bounce helps to convey more information about the scene as it lights up more
       portions. The first scene, with <code class="highlighter-rouge">max_ray_depth=0</code>, only has zero bounce
       lighting which is the light source itself. However, in the second scene with <code
-        class="highlighter-rouge">max_ray_depth=1</code>, the light bounces off the floor and onto the bunny and we can
+        class="highlighter-rouge">max_ray_depth=1</code>, the light bounces off the floor and onto the bunny and I can
       observe the top of the bunny illuminated. Later bounces will also highlight the underside of the bunny as the
       light bounces off the floor and walls and ultimately onto the bunny. This helps to diffuse all lighting. However,
       at the 100 depth layer, there are not that many very large bounce rays because the continuation probability
@@ -880,10 +880,10 @@ You will probably want to use the instructional machines for the above renders i
       increasing the sample rate and thus the rendering time, adaptive sampling concentrates the samples in the more
       difficult parts of the image as there are some pixels that converge quicker than others. The idea is to allocate
       more samples to regions that require higher fidelity representation, while reducing the number of samples in
-      smoother areas where details are less noticeable. We implemented adaptive sampling by updating \(s_1\) and \(s_2\)
-      as defined in the spec. After a multiple of <code class="highlighter-rouge">samplesPerBatch</code>, we calculated
-      the mean, standard deviation, and \(I\). If \(I \leq \text{maxTolerance} \cdot \mu\), we would stop sampling the
-      pixel and save the total number of samples that we have taken to calculate the color correctly. We used the
+      smoother areas where details are less noticeable. I implemented adaptive sampling by updating \(s_1\) and \(s_2\)
+      as defined in the spec. After a multiple of <code class="highlighter-rouge">samplesPerBatch</code>, I calculated
+      the mean, standard deviation, and \(I\). If \(I \leq \text{maxTolerance} \cdot \mu\), I would stop sampling the
+      pixel and save the total number of samples that I have taken to calculate the color correctly. I used the
       following equations:
       $$s_1 = \sum_{i = 1}^{n} x_i$$
       $$s_2 = \sum_{i = 1}^{n} x_i^2$$
