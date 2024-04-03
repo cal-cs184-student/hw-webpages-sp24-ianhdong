@@ -127,9 +127,7 @@
 	<h2 align="middle">Section I: Masses and Springs</h2>
 	<div class="bounding-box">
 		<h3>
-			<!-- <b> -->
 			Explain how you implemented the mass-spring system to represent the cloth.
-			<!-- </b> -->
 		</h3>
 		<p>
 			Because the cloth's springs needed to be in row major order, I first looped through the number of height
@@ -204,6 +202,26 @@
 	<h2 align="middle">Section II: Simulation via Numerical Integration</h2>
 	<div class="bounding-box">
 		<h3>
+			Explain how you implemented the numerical integration to simulate the cloth's movement.
+		</h3>
+		<p>
+			To simulate the cloth's movement, I first calculated the total force exerted on each of the <code
+				class="highlighter-rouge">PointMass</code> with the given <code
+				class="highlighter-rouge">external_accelerations</code> vector. Afterwards, I applied the spring
+			correction forces to each of the <code class="highlighter-rouge">PointMass</code> objects using the
+			following equation:
+			$$f_{\vec{a} \rightarrow \vec{b}} = k_s \frac{\vec{b} - \vec{a}}{\|\vec{b} - \vec{a} \|}(\|\vec{b} - \vec{a}
+			\| - l)$$
+			I made sure to check if a particular spring was enabled and disregarded it if it was not. With the total
+			force calculated, I implemented Verlet integration to compute the new location for each of the <code
+				class="highlighter-rouge">PointMass</code> objects using the following equation:
+			$$x_{t + dt} = x_t + (1 - d) \cdot (x_t x_{t - dt}) + a_t \cdot (dt)^2$$
+			where $a_t$ is the total force from before divided by the mass of the <code class="highlighter-rouge">PointMass</code>. $d$ represented the damping factor and was used to slow down the velocity of the cloth because in real life friction and air resistance are forces that oppose the velocity of the cloth. Finally, to ensure that the springs did not stretch more than 10% of their original rest length, I looped through each pair of springs and shifted them towards each other and checked for corner cases when they would be pinned and could not be adjusted.
+		</p>
+	</div>
+	<br>
+	<div class="bounding-box">
+		<h3>
 			Experiment with some the parameters in the simulation. To do so, pause the simulation at the start with
 			<code class="highlighter-rouge">P</code>,
 			modify the values of interest, and then resume by pressing <code class="highlighter-rouge">P</code> again.
@@ -211,7 +229,7 @@
 			time from the cloth's starting position by pressing <code class="highlighter-rouge">R</code>. Describe the
 			effects of changing the spring constant <code class="higlighter-rouge">ks</code>; how does the cloth behave
 			from start to rest with a very low <code class="higlighter-rouge">ks</code>? A high <code
-				class="highlighter-rouge">ks</code>
+				class="highlighter-rouge">ks</code>?
 		</h3>
 		Here are the screenshots of the cloth from <code class="highlighter-rouge">scene/pinned2.json</code> with
 		different <code class="highlighter-rouge">ks</code> values:
@@ -220,15 +238,23 @@
 			<table style="width:100%">
 				<tr align="center">
 					<td>
+						<img src="./Images/Task2/sp24-clothsim-pinned2-ks-10.png" align="middle" />
+						<figcaption><code class="highlighter-rouge">pinned2.json</code> with <code
+								class="highlighter-rouge">ks</code> = 10
+						</figcaption>
+					</td>
+					<td>
 						<img src="./Images/Task2/sp24-clothsim-pinned2-ks-100.png" align="middle" />
 						<figcaption><code class="highlighter-rouge">pinned2.json</code> with <code
 								class="highlighter-rouge">ks</code> = 100
 						</figcaption>
 					</td>
+				</tr>
+				<tr>
 					<td>
-						<img src="./Images/Task2/sp24-clothsim-pinned2-ks-1000.png" align="middle" />
+						<img src="./Images/Task2/sp24-clothsim-pinned2-ks-5000.png" align="middle" />
 						<figcaption><code class="highlighter-rouge">pinned2.json</code> with <code
-								class="highlighter-rouge">ks</code> = 1000
+								class="highlighter-rouge">ks</code> = 5000
 						</figcaption>
 					</td>
 					<td>
@@ -240,11 +266,115 @@
 				</tr>
 			</table>
 		</div>
+		<br>
+		At a low <code class="highlighter-rouge">ks</code>, the cloth is much more elastic and less rigid and thus
+		throughout the simulation the fabric would stretch easier. As I increased the <code
+			class="highlighter-rouge">ks</code>, the cloth became stiffer and stiffer and less likely to stretch as
+		much. The cloth would also be more likely to rest in a more rigid position as the spring forces would oppose
+		gravity more. There were also fewer wrinkles as the cloth would be less likely to fold.
 	</div>
 	<br>
 	<div class="bounding-box">
 		<h3>
-			Show us a screenshot of your shaded cloth from scene/pinned4.json in its final resting state! If you choose
+			What about for <code class="highlighter-rouge">density</code>?
+		</h3>
+		Here are the screenshots of the cloth from <code class="highlighter-rouge">scene/pinned2.json</code> with
+		different <code class="highlighter-rouge">density</code> values:
+
+		<div align="middle">
+			<table style="width:100%">
+				<tr align="center">
+					<td>
+						<img src="./Images/Task2/sp24-clothsim-pinned2-density-15.png" align="middle" />
+						<figcaption><code class="highlighter-rouge">pinned2.json</code> with <code
+								class="highlighter-rouge">density</code> = 15
+						</figcaption>
+					</td>
+					<td>
+						<img src="./Images/Task2/sp24-clothsim-pinned2-density-100.png" align="middle" />
+						<figcaption><code class="highlighter-rouge">pinned2.json</code> with <code
+								class="highlighter-rouge">density</code> = 100
+						</figcaption>
+					</td>
+				</tr>
+				<tr align="center">
+					<td>
+						<img src="./Images/Task2/sp24-clothsim-pinned2-density-1000.png" align="middle" />
+						<figcaption><code class="highlighter-rouge">pinned2.json</code> with <code
+								class="highlighter-rouge">density</code> = 1000
+						</figcaption>
+					</td>
+					<td>
+						<img src="./Images/Task2/sp24-clothsim-pinned2-density-10000.png" align="middle" />
+						<figcaption><code class="highlighter-rouge">pinned2.json</code> with <code
+								class="highlighter-rouge">density</code> = 10000
+						</figcaption>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<br>
+		At a low <code class="highlighter-rouge">density</code>, the cloth acted very similarly to a high <code
+			class="highlighter-rouge">ks</code> value as the cloth was less likely to stretch. The
+		top of the cloth had fewer deformations and wrinkles. Because the volume of the cloth never changed, a lower
+		<code class="highlighter-rouge">density</code> meant that the mass was smaller and so the force of gravity was
+		less likely to deform the cloth. As I increased the <code class="highlighter-rouge">density</code>, the cloth
+		was more likely to stretch and deform as the mass was larger and the force of gravity was higher and could
+		oppose the spring forces more.
+	</div>
+	<br>
+	<div class="bounding-box">
+		<h3>
+			What about for <code class="highlighter-rouge">damping</code>?
+		</h3>
+		Here are some <code class="highlighter-rouge">gifs</code> that illustrate the effects of the <code
+			class="highlighter-rouge">damping</code> parameter on the cloth from <code
+			class="highlighter-rouge">scene/pinned2.json</code>. To view them, please
+		visit <a
+			href="https://cal-cs184-student.github.io/hw-webpages-sp24-ianhdong/hw4/">https://cal-cs184-student.github.io/hw-webpages-sp24-ianhdong/hw4/</a>.
+
+		<div align="middle">
+			<table style="width:100%">
+				<tr align="center">
+					<td>
+						<img src="./Images/Task2/sp24-clothsim-pinned2-damping-0.gif" align="middle" />
+						<figcaption><code class="highlighter-rouge">pinned2.json</code> with <code
+								class="highlighter-rouge">damping</code> = 0
+						</figcaption>
+					</td>
+					<td>
+						<img src="./Images/Task2/sp24-clothsim-pinned2-damping-25.gif" align="middle" />
+						<figcaption><code class="highlighter-rouge">pinned2.json</code> with <code
+								class="highlighter-rouge">damping</code> = 25
+						</figcaption>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<img src="./Images/Task2/sp24-clothsim-pinned2-damping-50.gif" align="middle" />
+						<figcaption><code class="highlighter-rouge">pinned2.json</code> with <code
+								class="highlighter-rouge">damping</code> = 50
+						</figcaption>
+					</td>
+					<td>
+						<img src="./Images/Task2/sp24-clothsim-pinned2-damping-99.gif" align="middle" />
+						<figcaption><code class="highlighter-rouge">pinned2.json</code> with <code
+								class="highlighter-rouge">damping</code> = 99
+						</figcaption>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<br>
+		Damping is a force that opposes the velocity of the cloth and slows it down. When there was no damping, the
+		cloth would oscillate wildly and did not come to rest. As I increased the damping, the cloth would come to rest
+		and the oscillations would dramatically decrease.
+	</div>
+	<br>
+	<div class="bounding-box">
+		<h3>
+			Show us a screenshot of your shaded cloth from <code class="highlighter-rouge">scene/pinned4.json </code> in
+			its final resting state! If you choose
 			to use different parameters than the default ones, please list them.
 		</h3>
 		Here are the screenshots of the shaded cloth from <code class="highlighter-rouge">scene/pinned4.json</code> in
@@ -859,7 +989,7 @@
 				class="highlighter-rouge">PointMass</code> at every time step. Here are a few
 			screenshots of wind acting upon the cloth where the wind acts more strongly towards the bottom. To view the
 			<code class="highlighter-rouge">gif</code>, please
-			visit this page linked at <a
+			visit <a
 				href="https://cal-cs184-student.github.io/hw-webpages-sp24-ianhdong/hw4/">https://cal-cs184-student.github.io/hw-webpages-sp24-ianhdong/hw4/</a>.
 		</p>
 
@@ -900,6 +1030,36 @@
 				</tr>
 			</table>
 		</div>
+	</div>
+	<hr>
+	<br>
+	<h2 align="center">Credits</h2>
+	<div class="bounding-box">
+		<h3>Here were the resources that I used to help me complete this homework. Special thanks for giving me the
+			starting points and allowing me to build off of them.</h3>
+
+		<ul>
+			<li>
+				Cel Shading Tutorial: <a
+					href="https://www.youtube.com/watch?v=h15kTY3aWaY">https://www.youtube.com/watch?v=h15kTY3aWaY</a>
+			</li>
+			<li>
+				Fog Shading Tutorial: <a
+					href="https://www.youtube.com/watch?v=oQksg57qsRA">https://www.youtube.com/watch?v=oQksg57qsRA</a>
+			</li>
+			<li>
+				Theory Behind Perlin Noise: <a
+					href="https://rtouti.github.io/graphics/perlin-noise-algorithm">https://rtouti.github.io/graphics/perlin-noise-algorithm</a>
+			</li>
+			<li>
+				Perlin Noise Pseudocode: <a
+					href="https://en.wikipedia.org/wiki/Perlin_noise">https://en.wikipedia.org/wiki/Perlin_noise</a>
+			</li>
+			<li>
+				Perlin Noise Generator: <a
+					href="https://github.com/daniilsjb/perlin-noise">https://github.com/daniilsjb/perlin-noise</a>
+			</li>
+		</ul>
 	</div>
 </body>
 
