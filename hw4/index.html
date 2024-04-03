@@ -215,6 +215,31 @@
 		</h3>
 		Here are the screenshots of the cloth from <code class="highlighter-rouge">scene/pinned2.json</code> with
 		different <code class="highlighter-rouge">ks</code> values:
+
+		<div align="middle">
+			<table style="width:100%">
+				<tr align="center">
+					<td>
+						<img src="./Images/Task2/sp24-clothsim-pinned2-ks-100.png" align="middle" />
+						<figcaption><code class="highlighter-rouge">pinned2.json</code> with <code
+								class="highlighter-rouge">ks</code> = 100
+						</figcaption>
+					</td>
+					<td>
+						<img src="./Images/Task2/sp24-clothsim-pinned2-ks-1000.png" align="middle" />
+						<figcaption><code class="highlighter-rouge">pinned2.json</code> with <code
+								class="highlighter-rouge">ks</code> = 1000
+						</figcaption>
+					</td>
+					<td>
+						<img src="./Images/Task2/sp24-clothsim-pinned2-ks-10000.png" align="middle" />
+						<figcaption><code class="highlighter-rouge">pinned2.json</code> with <code
+								class="highlighter-rouge">ks</code> = 10000
+						</figcaption>
+					</td>
+				</tr>
+			</table>
+		</div>
 	</div>
 	<br>
 	<div class="bounding-box">
@@ -540,7 +565,14 @@
 			create lighting and material effects.
 		</h3>
 		<p>
-
+			A shader program is used to determine how the pixels of an object get rendered, particularly in terms of
+			lighting, color, and texture. A vertex shader will operate on each of the object's vertices and primarily
+			helps manipulate the positions if needed. For example, it will convert between local space coordinates into
+			view space coordinates. They help create animations and the geometric representation
+			within a scene. Once each of the vertices have been processed, the fragment shader will then operate on each
+			of the individual pixels and help determine their color through lighting calculations and material sampling
+			as well as
+			shading intensities. Both shaders together help create the final image that is displayed on the screen.
 		</p>
 	</div>
 	<br>
@@ -550,7 +582,18 @@
 			outputting only the ambient component, a screen shot only outputting the diffuse component, a screen shot
 			only outputting the specular component, and one using the entire Blinn-Phong model.
 		</h3>
-
+		The Blinn-Phong shading model is a shading model that is used to simulate the way that light interacts with and
+		object. It consists of 3 different components: ambient, diffuse, and specular. The ambient component is the
+		constant color that is present on the object regardless of the surface's orientation or the light's position.
+		The diffuse component is the color that is reflected uniformly off of the object's surface and gives the object
+		a matte appearance. The intensity of the diffuse component is dependent on the angle between the light source
+		and the surface normal. Finally, the specular component is the shiny highlights reflected off of the glossy
+		surface. it is dependent on the angle between the light source, the surface normal, and the camera and uses a
+		halfway vector between the light direction and viewer direction. The Blinn-Phong model is the sum of all three
+		components and is used to create a
+		more realistic lighting effect.
+		<br>
+		<br>
 		Here are the screenshots of the Blinn-Phong shader outputting the ambient, diffuse, specular, and the entire
 		Blinn-Phong model:
 
@@ -592,7 +635,7 @@
 				<tr align="center">
 					<td>
 						<img src="./Images/Task5/sp24-clothsim-wolf-fur.png" align="middle" width="400px" />
-						<figcaption>Wolf Fur Texture Mapping</figcaption>
+						<figcaption>Wolf Fur Texture</figcaption>
 					</td>
 					<td>
 						<img src="./Images/Task5/sp24-clothsim-wolf-fur-texture-mapping.png" align="middle"
@@ -639,6 +682,14 @@
 			</table>
 		</div>
 		<br>
+		Both bump mapping and displacement mapping are techniques used to achieve a more realistic texture surface
+		detailing such as adding grooves or wrinkles. Bump mapping, however, achieves this effect by simulating the
+		appearance and altering the way that light interacts with the surface of the object. Darker areas help represent
+		dents while light areas simulate protrusions. On the other hand, displacement mapping that actually changes the
+		geometry of the object as in the <code class="highlighter-rouge">vert</code> file we needed to shift the vertex
+		positions. It will carry information about the height of the surface.
+		<br>
+		<br>
 		Here are the screenshots of the sphere with different coarseness values:
 
 		<div align="middle">
@@ -673,6 +724,12 @@
 				</tr>
 			</table>
 		</div>
+		<br>
+		For the bump mapping, the sphere with a coarseness of 16 had a much smoother surface and the grooves were not as
+		pronounced. When it increased to 128, there were much more dents near the top of the sphere and sharp
+		differences under the lighting. For the displacement mapping, the sphere with a coarseness of 16 had a much
+		smoother surface as well when I had zoomed in and the protrusions did not seem so prominent because there are
+		fewer vertices. As I increased to 128, there were edges and detailed grooves that were much more pronounced.
 	</div>
 	<br>
 	<div class="bounding-box">
@@ -709,11 +766,27 @@
 			<li>
 				I wanted to create similar shading to what I have seen in old cartoons. For this shader, I used the
 				Lambertian diffuse shading and quantized it into different
-				levels before using this as the shading level for the color intensity. In the image shown below, there
+				levels by floor modding it to the closest multiple of 0.25 before using this as the shading level for
+				the color intensity. In the images shown below, there
 				are distinct levels and noticeable jumps between the shading.
 			</li>
 			<li>
-				For the second shader, I decided to simulate a fog effect.
+				For the second shader, I decided to simulate a fog effect. Pixels farther away would have lower
+				visibility so I found the distance between the camera and the pixel and scaled it down to calculate the
+				visibility score. Then, I mixed the pixel color with the fog factor and scaled
+				the new fog color by the lighting calculated similarly in the Lambertian diffuse shading. In the images
+				shown below, farther pixels from the camera seem to blend in more with the background color and a foggy
+				effect surrounds the bottom of the sphere.
+			</li>
+			<li>
+				I modified my fog shader to create a shadow shader, specifically I changed the alpha variable to
+				indicate how opaque the shadow should be. In the images shown below, the shadow is casted on the plane
+				and the sphere.
+			</li>
+			<li>
+				Finally, I built a transparent shader by modifying my Blinn-Phong shader and changed the opacity of each
+				pixel. By decreasing the alpha value of the output color, I was able to create a transparent effect. In
+				the images shown below, the sphere is transparent and the cloth behind it is visible through it.
 			</li>
 		</ul>
 		</p>
@@ -774,7 +847,8 @@
 		</h3>
 		<p>
 			I decided to simulate wind forces acting upon the cloth and used Perlin noise to generate smooth continuous
-			directional vectors to represent a coherent flow pattern. First, I researched how to implement Perlin noise
+			directional vectors procedurally to represent a coherent flow pattern. First, I researched how to implement
+			Perlin noise
 			through helper C++ libraries as well as the background theory behind it. With the help of this <a
 				href="https://en.wikipedia.org/wiki/Perlin_noise">Wikipedia article</a>, I built my own Perlin noise
 			generator and later I imported in this <a href="https://github.com/daniilsjb/perlin-noise">GitHub
@@ -822,7 +896,7 @@
 						<img src="./Images/ExtraCredit/wind-simulation.gif" align="middle" />
 						<figcaption>Wind Simulation Gif</figcaption>
 					</td>
-					
+
 				</tr>
 			</table>
 		</div>
